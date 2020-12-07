@@ -43,4 +43,11 @@ public class ReadingTipServiceTest {
         rtService.delete(1);
         verify(fakeDatabase).delete(1);
     }
+    
+    @Test
+    public void searchReadingTipsSearchesTips() throws SQLException {
+        rtService.searchReadingTips("search");
+        verify(fakeDatabase).searchFromTips("search");
+    } 
+    
 }
