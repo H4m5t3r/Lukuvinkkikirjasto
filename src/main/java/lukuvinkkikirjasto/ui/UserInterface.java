@@ -20,7 +20,7 @@ public class UserInterface {
     private IO io;
     private HashMap<String, Command> commands = new HashMap<String, Command>();
     private Command unknown;
-    
+
     public UserInterface(IO io, ReadingTipService rtService) throws SQLException {
         this.io = io;
         commands.put("exit", new Exit(io, rtService));
@@ -43,14 +43,14 @@ public class UserInterface {
             io.output("");
         }
     }
-    
+
     private void printCommands() {
         io.output("Here are the available commands:");
         for (String command : commandDescriptions) {
             io.output(command);
         }
     }
-    
+
     public Command chooseCommand(String input) {
         return commands.getOrDefault(input, unknown);
     }

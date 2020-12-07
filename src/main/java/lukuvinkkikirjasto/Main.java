@@ -15,6 +15,5 @@ public class Main {
         ReadingTipService rtService = new ReadingTipService(database);
         UserInterface ui = new UserInterface(systemIO, rtService);
         ui.start();
-        
     }
 }
