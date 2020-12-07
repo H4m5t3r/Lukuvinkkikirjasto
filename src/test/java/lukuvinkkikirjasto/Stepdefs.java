@@ -70,17 +70,23 @@ public class Stepdefs {
     }
 
     @Given("tip with header {string} and description {string} is added")
-    public void tipWithHeaderAndDescriptionIsAdded(String string, String string2) throws SQLException {
-        rtService.add(string, string2);
-        verify(fakeDatabase).create(string, string2);
-        list.add(new ReadingTip(list.size()+1, string, string2));
+    public void tipWithHeaderAndDescriptionIsAdded(String header, String desc) throws SQLException {
+        rtService.add(header, desc);
+        verify(fakeDatabase).create(header, desc);
+        list.add(new ReadingTip(list.size()+1, header, desc));
         when(fakeDatabase.getTips()).thenReturn(list);
     }
 
+    @Given("reading tip with id {int} is marked as read")
+    public void markReadingTipAsRead(int id) throws SQLException {
+        rtService.setReadStatusToTrue(id);
+        verify(fakeDatabase).setReadStatusToTrue(id);
+    }
+
     @Then("tip with id, header {string} and description {string} is listed")
-    public void tipWithIdAndHeaderAndDescriptionIsListed(String string, String string2) throws SQLException {
+    public void tipWithIdAndHeaderAndDescriptionIsListed(String header, String desc) throws SQLException {
         verify(io, times(2)).output("Which tips to list? Type unread/read (default: all)" 
-                + "ID: " + anyString() + "\n" + "Header: " + string + "\n" + "Description: " + string2 + "\n");
+                + "ID: " + anyString() + "\n" + "Header: " + header + "\n" + "Description: " + desc + "\n");
     }
 
     @When("id {int} and new header {string} are given")
