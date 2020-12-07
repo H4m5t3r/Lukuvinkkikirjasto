@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import lukuvinkkikirjasto.domain.ReadingTip;
 import org.junit.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
@@ -32,6 +33,20 @@ public class SQLDatabaseTest {
     }
 
     @Test
+    public void containsIdFindsExistingId() throws SQLException {
+        database.create("Test Item", "Test description");
+        int id = database.getTips().get(0).getId();
+        assertTrue(database.containsId(id));
+    }
+
+    @Test
+    public void containsIdDoesNotFindNonExistingId() throws SQLException {
+        database.create("Test Item", "Test description");
+        int id = -1;
+        assertFalse(database.containsId(id));
+    }
+    
+    @Test
     public void editHeaderChangesAreSaved() throws SQLException {
         database.create("Header", "Desc");
         int id = database.getTips().get(0).getId();
@@ -46,7 +61,37 @@ public class SQLDatabaseTest {
         database.editDescription(id, "Edited description");
         assertEquals("Edited description", database.getTips().get(0).getDescription());
     }
-
+   
+    @Test
+    public void readingTipIsMarkedAsReadCorrectly() throws SQLException {
+        database.create("Test Item", "Test description");
+        database.setReadStatusToTrue(1);
+        ArrayList<ReadingTip> tipList = database.getTips();
+        assertEquals(true, tipList.get(0).getReadStatus());
+    }
+    
+    @Test
+    public void onlyReadReadingTipsAreListedWhenAsked() throws SQLException {
+        database.create("Test Item", "Test description");
+        database.create("New Test Item", "New test description");
+        ArrayList<ReadingTip> tipList = database.getTips();
+        database.setReadStatusToTrue(1);
+        tipList = database.getReadOrUnreadTips(true);
+        assertEquals(1, tipList.size());
+        assertEquals(tipList.get(0).toString(), new ReadingTip(1, "Test Item", "Test description").toString());
+    }
+        
+    @Test
+    public void onlyUnreadReadingTipsAreListedWhenAsked() throws SQLException {
+        database.create("Test Item", "Test description");
+        database.create("New Test Item", "New test description");
+        ArrayList<ReadingTip> tipList = database.getTips();
+        database.setReadStatusToTrue(1);
+        tipList = database.getReadOrUnreadTips(false);
+        assertEquals(1, tipList.size());
+        assertEquals(tipList.get(0).toString(), new ReadingTip(2, "New Test Item", "New test description").toString());
+    }
+    
     @Test
     public void readingTipIsDeletedFromDatabase() throws SQLException {
         database.create("Test Item", "Test description");
