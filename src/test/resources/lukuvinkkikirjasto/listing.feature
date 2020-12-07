@@ -12,7 +12,7 @@ Feature: The reading tips can be listed.
     Scenario: unread tip is listed when the 'unread' option is selected
         Given tip with header "Hello Ruby" and description "intro to coding" is added
         And command "list" is selected and option "unread" is given
-        Then tip with id, header "Hello Runy" and description "intro to coding" is listed
+        Then tip with id, header "Hello Ruby" and description "intro to coding" is listed
 
     Scenario: unread tip is not listed when the 'read' option is selected
         Given tip with header "Hello Ruby" and description "intro to coding" is added
