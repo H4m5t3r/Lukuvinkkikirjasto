@@ -91,7 +91,7 @@ public class Stepdefs {
             listedTipString += tip.toString();
         }
         verify(io, times(2)).output("Which tips to list? Type unread/read (default: all)" 
-                + "ID: " + anyString() + "\n" + listedTipString);
+        + "ID: " + anyString() + "\n" + "Header: " + header + "\n" + "Description: " + desc + "\n");
     }
 
     @When("id {int} and new header {string} are given")
