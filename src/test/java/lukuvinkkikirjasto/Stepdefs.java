@@ -85,8 +85,13 @@ public class Stepdefs {
 
     @Then("tip with id, header {string} and description {string} is listed")
     public void tipWithIdAndHeaderAndDescriptionIsListed(String header, String desc) throws SQLException {
+        ArrayList<ReadingTip> tipList = fakeDatabase.getTips();
+        String listedTipString = "";
+        for (ReadingTip tip : tipList) {
+            listedTipString += tip.toString();
+        }
         verify(io, times(2)).output("Which tips to list? Type unread/read (default: all)" 
-                + "ID: " + anyString() + "\n" + "Header: " + header + "\n" + "Description: " + desc + "\n");
+                + "ID: " + anyString() + "\n" + listedTipString);
     }
 
     @When("id {int} and new header {string} are given")
