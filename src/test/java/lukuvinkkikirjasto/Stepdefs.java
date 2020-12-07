@@ -36,14 +36,14 @@ public class Stepdefs {
     }
 
     @Given("command {string} is selected")
-    public void commandIsSelected(String string) {
-        ui.chooseCommand(string).execute();
+    public void commandIsSelected(String command) {
+        ui.chooseCommand(command).execute();
     }
 
     @Given("command {string} is selected and option {string} is given")
-    public void commandIsSelected(String string, String option) {
+    public void commandIsSelected(String command, String option) {
         when(io.input()).thenReturn(option);
-        ui.chooseCommand(string).execute();
+        ui.chooseCommand(command).execute();
     }
 
     @Then("message {string} is shown")

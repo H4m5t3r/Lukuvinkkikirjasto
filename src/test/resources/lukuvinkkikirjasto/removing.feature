@@ -13,15 +13,11 @@ Feature: As a user I can remove an existing reading tip.
     Scenario: Removing an existing reading tip works
         Given tip with header "Hello Ruby" and description "intro to coding" is added
         When command "delete" is selected
-        Then message "Give tip id:" is shown
-        When delete id 1 and confirmation "y" are given
+        And delete id 1 and confirmation "y" are given
         Then the tip with id 1 is removed.
 
     Scenario: Reading tips are not removed without confirmation
         Given tip with header "Hello Ruby" and description "intro to coding" is added
         When command "delete" is selected
-        Then message "Give tip id:" is shown
-        When delete id 1 and confirmation "no" are given
+        And delete id 1 and confirmation "no" are given
         Then the tip with id 1 is not removed.
-
-    
