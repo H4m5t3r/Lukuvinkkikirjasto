@@ -11,6 +11,8 @@ import lukuvinkkikirjasto.domain.ReadingTip;
 import lukuvinkkikirjasto.domain.ReadingTipService;
 import lukuvinkkikirjasto.ui.SystemIO;
 import lukuvinkkikirjasto.ui.UserInterface;
+
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -85,11 +87,10 @@ public class Stepdefs {
 
     @Then("tip with id, header {string} and description {string} is listed")
     public void tipWithIdAndHeaderAndDescriptionIsListed(String header, String desc) throws SQLException {
-        ArrayList<ReadingTip> tipList = fakeDatabase.getTips();
-        String listedTipString = "";
-        for (ReadingTip tip : tipList) {
-            listedTipString += tip.toString();
-        }
+        ReadingTip tip = fakeDatabase.getTips().get(0);
+        assertEquals(tip.getHeader(), header);
+        assertEquals(tip.getDescription(), desc);
+        
         verify(io, times(2)).output("Which tips to list? Type unread/read (default: all)" 
         + "ID: " + anyString() + "\n" + "Header: " + header + "\n" + "Description: " + desc + "\n");
     }
