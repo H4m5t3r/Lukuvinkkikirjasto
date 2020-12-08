@@ -166,4 +166,23 @@ public class Stepdefs {
     public void searchIsPerformed(String searchTerm) throws SQLException {
         verify(fakeDatabase, times(1)).searchFromTips(searchTerm);
     }
+
+    @Given("the database contains 2 reading tips that match the search term: {string}, {string} and {string}, {string}")
+    public void matchesFoundInDatabase(String header1, String desc1, String header2, String desc2) throws SQLException {
+        ArrayList<ReadingTip> searchResults = new ArrayList<>();
+        searchResults.add(new ReadingTip(3, header1, desc1, false));
+        searchResults.add(new ReadingTip(7, header2, desc2, false));
+        when(rtService.searchReadingTips(anyString())).thenReturn(searchResults);
+    }
+
+    @Then("reading tip with header {string} and description {string} is included in the search results")
+    public void tipIsIncludedInSearchResults(String header, String description) throws SQLException {
+        ArrayList<ReadingTip> searchResults = rtService.searchReadingTips(anyString());
+        assertTrue(readingTipExistsInList(searchResults, header, description));
+    }
+
+    @Given("the database does not contain any reading tips that match the search term")
+    public void noMatchesInDatabase() throws SQLException {
+        when(rtService.searchReadingTips(anyString())).thenReturn(new ArrayList<ReadingTip>());
+    }
 }
