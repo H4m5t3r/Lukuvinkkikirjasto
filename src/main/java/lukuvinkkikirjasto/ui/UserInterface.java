@@ -7,14 +7,15 @@ import lukuvinkkikirjasto.domain.ReadingTipService;
 
 public class UserInterface {
     private String[] commandDescriptions = {
-        "exit         - closes the application",
-        "new          - add a new reading tip",
-        "list         - lists reading tips by choice",
-        "search       - search from tips by header or description",
-        "edit header  - edit header of a tip",
-        "edit desc    - edit description of a tip",
-        "mark as read - mark a reading tip as read",
-        "delete       - delete a reading tip",
+        "exit           - closes the application",
+        "new            - add a new reading tip",
+        "list           - lists reading tips by choice",
+        "search         - search from tips by header or description",
+        "edit header    - edit header of a tip",
+        "edit desc      - edit description of a tip",
+        "mark as read   - mark a reading tip as read",
+        "mark as unread - mark a reading tip as unread",
+        "delete         - delete a reading tip",
     };
     private IO io;
     private HashMap<String, Command> commands = new HashMap<String, Command>();
@@ -32,6 +33,7 @@ public class UserInterface {
         commands.put("edit desc", new EditDescription(io, rtService));
         commands.put("delete", new DeleteReadingTip(io, rtService));
         commands.put("mark as read", new MarkAsRead(io, rtService));
+        commands.put("mark as unread", new MarkAsUnread(io, rtService));
         unknown = new Unknown(io, rtService);
     }
 
