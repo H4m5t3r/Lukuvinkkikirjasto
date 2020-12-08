@@ -157,8 +157,9 @@ public class Stepdefs {
     }
 
     @When("search term {string} is entered")
-    public void searchTermIsEntered(String searchTerm) {
+    public void searchTermIsEntered(String searchTerm) throws SQLException {
         when(io.input()).thenReturn(searchTerm);
+        rtService.searchReadingTips(searchTerm);
     }
 
     @Then("a search is performed with the search term {string}")
