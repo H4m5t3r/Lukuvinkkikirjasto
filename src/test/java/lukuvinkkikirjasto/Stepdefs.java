@@ -13,6 +13,7 @@ import lukuvinkkikirjasto.ui.SystemIO;
 import lukuvinkkikirjasto.ui.UserInterface;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -87,12 +88,19 @@ public class Stepdefs {
 
     @Then("tip with id, header {string} and description {string} is listed")
     public void tipWithIdAndHeaderAndDescriptionIsListed(String header, String desc) throws SQLException {
-        ReadingTip tip = fakeDatabase.getTips().get(0);
-        assertEquals(tip.getHeader(), header);
-        assertEquals(tip.getDescription(), desc);
-        
+        assertTrue(readingTipExistsInList(fakeDatabase.getTips(), header, desc));
+
         verify(io, times(2)).output("Which tips to list? Type unread/read (default: all)" 
         + "ID: " + anyString() + "\n" + "Header: " + header + "\n" + "Description: " + desc + "\n");
+    }
+
+    private boolean readingTipExistsInList(ArrayList<ReadingTip> tips, String header, String desc) {
+        for (ReadingTip tip : tips) {
+            if (tip.getHeader().equals(header) && tip.getDescription().equals(desc)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @When("id {int} and new header {string} are given")
@@ -140,5 +148,15 @@ public class Stepdefs {
     @Then("header editor is not accessed")
     public void headerEditorNotAccessed() throws SQLException {
         verify(fakeDatabase, times(0)).editHeader(anyInt(), anyString());
+    }
+
+    @When("search term {string} is entered")
+    public void searchTermIsEntered(String searchTerm) {
+        when(io.input()).thenReturn(searchTerm);
+    }
+
+    @Then("a search is performed with the search term {string}")
+    public void searchIsPerformed(String searchTerm) throws SQLException {
+        verify(fakeDatabase, times(1)).searchFromTips(searchTerm);
     }
 }
