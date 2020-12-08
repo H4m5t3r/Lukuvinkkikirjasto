@@ -43,7 +43,7 @@ public class ReadingTipService {
         database.delete(id);
     }
     
-    public void setReadStatusToTrue(int id) throws SQLException {
-        database.setReadStatusToTrue(id);
+    public void setReadStatus(int id, boolean status) throws SQLException {
+        database.setReadStatus(id, status);
     }
 }

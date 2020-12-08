@@ -65,7 +65,7 @@ public class SQLDatabaseTest {
     @Test
     public void readingTipIsMarkedAsReadCorrectly() throws SQLException {
         database.create("Test Item", "Test description");
-        database.setReadStatusToTrue(1);
+        database.setReadStatus(1, true);
         ArrayList<ReadingTip> tipList = database.getTips();
         assertEquals(true, tipList.get(0).getReadStatus());
     }
@@ -75,7 +75,7 @@ public class SQLDatabaseTest {
         database.create("Test Item", "Test description");
         database.create("New Test Item", "New test description");
         ArrayList<ReadingTip> tipList = database.getTips();
-        database.setReadStatusToTrue(1);
+        database.setReadStatus(1, true);
         tipList = database.getReadOrUnreadTips(true);
         assertEquals(1, tipList.size());
         assertEquals(tipList.get(0).toString(), new ReadingTip(1, "Test Item", "Test description").toString());
@@ -86,7 +86,7 @@ public class SQLDatabaseTest {
         database.create("Test Item", "Test description");
         database.create("New Test Item", "New test description");
         ArrayList<ReadingTip> tipList = database.getTips();
-        database.setReadStatusToTrue(1);
+        database.setReadStatus(1, true);
         tipList = database.getReadOrUnreadTips(false);
         assertEquals(1, tipList.size());
         assertEquals(tipList.get(0).toString(), new ReadingTip(2, "New Test Item", "New test description").toString());

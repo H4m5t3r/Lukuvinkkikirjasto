@@ -3,8 +3,8 @@ package lukuvinkkikirjasto.ui;
 import java.sql.SQLException;
 import lukuvinkkikirjasto.domain.ReadingTipService;
 
-public class MarkAsRead extends Command {
-    public MarkAsRead(IO io, ReadingTipService rtService) {
+public class MarkAsUnread extends Command {
+    public MarkAsUnread(IO io, ReadingTipService rtService) {
         super(io, rtService);
     }
 
@@ -24,7 +24,7 @@ public class MarkAsRead extends Command {
                 io.output("Could not find responding tip.");
                 return;
             }
-            rtService.setReadStatus(id, true);
+            rtService.setReadStatus(id, false);
         } catch (SQLException e) {
             io.output("Problem accessing database.");
         }

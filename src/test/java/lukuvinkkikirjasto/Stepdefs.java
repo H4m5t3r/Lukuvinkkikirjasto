@@ -82,8 +82,8 @@ public class Stepdefs {
 
     @Given("reading tip with id {int} is marked as read")
     public void markReadingTipAsRead(int id) throws SQLException {
-        rtService.setReadStatusToTrue(id);
-        verify(fakeDatabase).setReadStatusToTrue(id);
+        rtService.setReadStatus(id, true);
+        verify(fakeDatabase).setReadStatus(id, true);
     }
 
     @Then("tip with id, header {string} and description {string} is listed")

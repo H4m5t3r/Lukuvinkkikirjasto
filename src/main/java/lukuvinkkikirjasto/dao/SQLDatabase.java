@@ -76,9 +76,9 @@ public class SQLDatabase implements Database {
     }
 
     @Override
-    public void setReadStatusToTrue(int id) throws SQLException {
+    public void setReadStatus(int id, boolean status) throws SQLException {
         PreparedStatement p = db.prepareStatement("UPDATE Tips SET read=? Where id=?");
-        p.setBoolean(1, true);
+        p.setBoolean(1, status);
         p.setInt(2, id);
         p.executeUpdate();
         p.close();

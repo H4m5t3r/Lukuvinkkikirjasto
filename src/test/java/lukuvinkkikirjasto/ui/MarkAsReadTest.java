@@ -27,7 +27,7 @@ public class MarkAsReadTest {
         when(io.input()).thenReturn("1");
         when(rtService.tipExists(1)).thenReturn(true);
         markAsRead.execute();
-        verify(rtService, times(1)).setReadStatusToTrue(1);
+        verify(rtService, times(1)).setReadStatus(1, true);
     }
     
     @Test
