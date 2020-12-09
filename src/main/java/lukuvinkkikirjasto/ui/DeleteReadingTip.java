@@ -27,7 +27,7 @@ public class DeleteReadingTip extends Command {
         }
         io.output("Are you sure? Enter 'y' to confirm.");
         input = io.input();
-        if (input.equals("y")) {
+        if (input.toLowerCase().equals("y")) {
             try {
                 rtService.delete(id);
             } catch (SQLException ex) {
