@@ -1,7 +1,5 @@
 package lukuvinkkikirjasto.domain;
 
-import java.util.Objects;
-
 public class ReadingTip {
     private int id;
     private String header;

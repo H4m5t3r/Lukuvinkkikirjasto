@@ -1,6 +1,5 @@
 package lukuvinkkikirjasto.ui;
 
-import java.sql.SQLException;
 import lukuvinkkikirjasto.domain.ReadingTipService;
 
 public class MarkAsUnread extends Command {

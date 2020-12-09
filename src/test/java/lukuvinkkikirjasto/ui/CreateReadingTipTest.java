@@ -3,12 +3,9 @@ package lukuvinkkikirjasto.ui;
 import java.sql.SQLException;
 import org.junit.*;
 
-import lukuvinkkikirjasto.domain.ReadingTip;
 import lukuvinkkikirjasto.domain.ReadingTipService;
 
 import static org.mockito.Mockito.*;
-
-import java.util.ArrayList;
 
 public class CreateReadingTipTest {
     

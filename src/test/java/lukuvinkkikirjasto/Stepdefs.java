@@ -5,14 +5,12 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import lukuvinkkikirjasto.dao.Database;
 import lukuvinkkikirjasto.domain.ReadingTip;
 import lukuvinkkikirjasto.domain.ReadingTipService;
 import lukuvinkkikirjasto.ui.SystemIO;
 import lukuvinkkikirjasto.ui.UserInterface;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;

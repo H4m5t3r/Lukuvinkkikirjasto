@@ -20,10 +20,8 @@ public class UserInterface {
     private IO io;
     private HashMap<String, Command> commands = new HashMap<String, Command>();
     private Command unknown;
-    private ReadingTipService rtService;
-
+    
     public UserInterface(IO io, ReadingTipService rtService) throws SQLException {
-        this.rtService = rtService;
         this.io = io;
         commands.put("exit", new Exit(io, rtService));
         commands.put("new", new CreateReadingTip(io, rtService));
