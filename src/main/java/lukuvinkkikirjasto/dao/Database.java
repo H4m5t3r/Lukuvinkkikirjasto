@@ -15,6 +15,8 @@ public interface Database {
     
     void editHeader(int id, String header) throws SQLException;
 
+    void editField(int id, String field, String text) throws SQLException;
+
     void editDescription(int id, String description) throws SQLException;
 
     Boolean containsId(int id) throws SQLException;

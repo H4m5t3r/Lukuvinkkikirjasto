@@ -9,40 +9,43 @@ import lukuvinkkikirjasto.domain.ReadingTip;
 
 // https://tikape-k20.mooc.fi/sqlite-java
 public class SQLDatabase implements Database {
+
     Connection db;
     Statement s;
 
     public SQLDatabase(String databaseName) throws SQLException {
-        db = DriverManager.getConnection("jdbc:sqlite:"+databaseName);
+        db = DriverManager.getConnection("jdbc:sqlite:" + databaseName);
         Statement s = db.createStatement();
-        s.execute("CREATE TABLE IF NOT EXISTS Tips (id INTEGER PRIMARY KEY AUTOINCREMENT, title VARCHAR NOT NULL, description VARCHAR, read BOOLEAN)");
-        s.execute("CREATE TABLE IF NOT EXISTS Books ("
-            + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + "writer VARCHAR, "
-            + "name VARCHAR, "
-            + "isbn VARCHAR, "
-            + "year VARCHAR, "
-            + "read BOOLEAN)");
+        s.execute("CREATE TABLE IF NOT EXISTS Tips (id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "type VARCHAR NOT NULL, "
+                + "read BOOLEAN, "
+                + "title VARCHAR, "
+                + "description VARCHAR, "
+                + "author VARCHAR, "
+                + "isbn VARCHAR, "
+                + "year VARCHAR, "
+                + "link VARCHAR)");
     }
 
-    @Override
     public void createDefault(String title, String description) throws SQLException {
-        PreparedStatement p = db.prepareStatement("INSERT INTO Tips(title, description, read) VALUES (?, ?, ?)");
+        PreparedStatement p = db.prepareStatement("INSERT INTO Tips(title, description, read, type) VALUES (?, ?, ?, ?)");
         p.setString(1, title);
         p.setString(2, description);
         p.setBoolean(3, false);
+        p.setString(4, "default");
         p.executeUpdate();
         p.close();
     }
 
     @Override
     public void createBook(String writer, String name, String isbn, String year) throws SQLException {
-        PreparedStatement p = db.prepareStatement("INSERT INTO Books(writer, name, isbn, year, read) VALUES (?, ?, ?, ?, ?)");
-        p.setString(1, writer);
-        p.setString(2, name);
-        p.setString(3, isbn);
-        p.setString(4, year);
+        PreparedStatement p = db.prepareStatement("INSERT INTO Tips(title, author, year, isbn, read, type) VALUES (?, ?, ?, ?, ?, ?)");
+        p.setString(1, name);
+        p.setString(2, writer);
+        p.setString(3, year);
+        p.setString(4, isbn);
         p.setBoolean(5, false);
+        p.setString(6, "book");
         p.executeUpdate();
         p.close();
     }
@@ -50,12 +53,29 @@ public class SQLDatabase implements Database {
     @Override
     public ArrayList<ReadingTip> getTips() throws SQLException {
         ArrayList<ReadingTip> tipList = new ArrayList<>();
-        PreparedStatement defaultP = db.prepareStatement("SELECT * FROM Tips");
-        ResultSet defaultR = defaultP.executeQuery();
-        tipList.addAll(this.parseDefaultTips(defaultR));
-        PreparedStatement bookP = db.prepareStatement("SELECT * FROM Books");
-        ResultSet bookR = bookP.executeQuery();
-        tipList.addAll(this.parseBookTips(bookR));
+        PreparedStatement p = db.prepareStatement("SELECT * FROM Tips");
+        ResultSet r = p.executeQuery();
+        while (r.next()) {
+            String type = r.getString("type");
+            if (type.equals("book")) {
+                tipList.add(new BookReadingTip(
+                        r.getInt("id"),
+                        r.getBoolean("read"),
+                        r.getString("author"),
+                        r.getString("title"),
+                        r.getString("isbn"),
+                        r.getString("year")
+                ));
+            } else if (type.equals("default")) {
+                tipList.add(new DefaultReadingTip(
+                        r.getInt("id"),
+                        r.getBoolean("read"),
+                        r.getString("title"),
+                        r.getString("description")
+                ));
+            }
+            
+        }
         return tipList;
     }
 
@@ -72,6 +92,15 @@ public class SQLDatabase implements Database {
     public void editDescription(int id, String description) throws SQLException {
         PreparedStatement statement = db.prepareStatement("UPDATE Tips SET description=? Where id=?");
         statement.setString(1, description);
+        statement.setInt(2, id);
+        statement.executeUpdate();
+        statement.close();
+    }
+
+    @Override
+    public void editField(int id, String field, String text) throws SQLException {
+        PreparedStatement statement = db.prepareStatement("UPDATE Tips SET " + field + "=? Where id=?");
+        statement.setString(1, text);
         statement.setInt(2, id);
         statement.executeUpdate();
         statement.close();
@@ -105,59 +134,36 @@ public class SQLDatabase implements Database {
     @Override
     public ArrayList<ReadingTip> getReadOrUnreadTips(boolean read) throws SQLException {
         ArrayList<ReadingTip> tipList = new ArrayList<>();
-        PreparedStatement defaultP = db.prepareStatement("SELECT * FROM TIPS WHERE read=?");
-        defaultP.setBoolean(1, read);
-        ResultSet defaultR = defaultP.executeQuery();
-        tipList.addAll(this.parseDefaultTips(defaultR));
-        PreparedStatement bookP = db.prepareStatement("SELECT * FROM Books WHERE read=?");
-        bookP.setBoolean(1, read);
-        ResultSet bookR = bookP.executeQuery();
-        tipList.addAll(this.parseBookTips(bookR));
+        PreparedStatement p = db.prepareStatement("SELECT * FROM TIPS WHERE read=?");
+        p.setBoolean(1, read);
+        ResultSet r = p.executeQuery();
+        while (r.next()) {
+            tipList.add(new DefaultReadingTip(
+                    r.getInt("id"),
+                    r.getBoolean("read"),
+                    r.getString("title"),
+                    r.getString("description")
+            ));
+        }
         return tipList;
     }
 
     public ArrayList<ReadingTip> searchFromTips(String text) throws SQLException {
         ArrayList<ReadingTip> tipList = new ArrayList<>();
-        PreparedStatement defaultP = db.prepareStatement("SELECT * FROM TIPS WHERE title LIKE ? OR description LIKE ?");
-        defaultP.setString(1, "%" + text + "%");
-        defaultP.setString(2, "%" + text + "%");
-        ResultSet defaultR = defaultP.executeQuery();
-        tipList.addAll(this.parseDefaultTips(defaultR));
-
-        PreparedStatement bookP = db.prepareStatement("SELECT * FROM TIPS WHERE writer LIKE ? OR name LIKE ? OR isbn LIKE ?");
-        bookP.setString(1, "%" + text + "%");
-        bookP.setString(2, "%" + text + "%");
-        bookP.setString(3, "%" + text + "%");
-        ResultSet bookR = bookP.executeQuery();
-        tipList.addAll(this.parseBookTips(bookR));
-        return tipList;
-    }
-
-    private ArrayList<ReadingTip> parseDefaultTips(ResultSet r) throws SQLException {
-        ArrayList<ReadingTip> tipList = new ArrayList<>();
+        PreparedStatement p = db.prepareStatement("SELECT * FROM TIPS WHERE title LIKE ? OR description LIKE ?");
+        p.setString(1, "%" + text + "%");
+        p.setString(2, "%" + text + "%");
+        ResultSet r = p.executeQuery();
         while (r.next()) {
             tipList.add(new DefaultReadingTip(
-                r.getInt("id"),
-                r.getBoolean("read"),
-                r.getString("title"),
-                r.getString("description")
-                ));
+                    r.getInt("id"),
+                    r.getBoolean("read"),
+                    r.getString("title"),
+                    r.getString("description")
+            ));
         }
         return tipList;
     }
 
-    private ArrayList<ReadingTip> parseBookTips(ResultSet r) throws SQLException {
-        ArrayList<ReadingTip> tipList = new ArrayList<>();
-        while (r.next()) {
-            tipList.add(new BookReadingTip(
-                r.getInt("id"),
-                r.getBoolean("read"),
-                r.getString("writer"),
-                r.getString("name"),
-                r.getString("isbn"),
-                r.getString("year")
-                ));
-        }
-        return tipList;
-    }
+
 }
