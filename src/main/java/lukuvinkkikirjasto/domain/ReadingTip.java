@@ -19,10 +19,6 @@ public abstract class ReadingTip {
         return this.type;
     }
 
-    public String[] getFields() {
-        return (String[]) this.fields.keySet().toArray();
-    }
-
     public boolean isField(String field) {
         return this.fields.containsKey(field);
     }
@@ -31,7 +27,7 @@ public abstract class ReadingTip {
         this.fields.put(field, value);
     }
 
-    protected String getField(String field) {
+    public String getField(String field) {
         return this.fields.get(field);
     }
 

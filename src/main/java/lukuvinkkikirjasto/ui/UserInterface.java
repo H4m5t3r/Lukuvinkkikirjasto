@@ -9,6 +9,7 @@ public class UserInterface {
     private String[] commandDescriptions = {
         "exit           - closes the application",
         "new            - add a new reading tip",
+        "add book       - add a new book",
         "list           - lists reading tips by choice",
         "search         - search from tips by header or description",
         "edit header    - edit header of a tip",
@@ -25,6 +26,7 @@ public class UserInterface {
         this.io = io;
         commands.put("exit", new Exit(io, rtService));
         commands.put("new", new CreateReadingTip(io, rtService));
+        commands.put("add book", new AddBook(io, rtService));
         commands.put("list", new ListReadingTips(io, rtService));
         commands.put("search", new Search(io, rtService));
         commands.put("edit header", new EditHeader(io, rtService));
