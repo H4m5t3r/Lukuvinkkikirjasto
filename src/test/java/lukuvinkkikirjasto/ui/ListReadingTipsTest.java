@@ -2,8 +2,6 @@ package lukuvinkkikirjasto.ui;
 
 import java.sql.SQLException;
 
-import lukuvinkkikirjasto.dao.Database;
-import lukuvinkkikirjasto.dao.SQLDatabase;
 import org.junit.*;
 
 import lukuvinkkikirjasto.domain.ReadingTip;

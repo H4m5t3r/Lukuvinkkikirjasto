@@ -10,3 +10,7 @@ build
 *database.db
 bin
 /nbproject
+
+# Ignore Eclipse specific files
+.classpath
+.project

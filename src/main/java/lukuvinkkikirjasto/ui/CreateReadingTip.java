@@ -1,9 +1,6 @@
 package lukuvinkkikirjasto.ui;
 
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import lukuvinkkikirjasto.domain.ReadingTip;
 import lukuvinkkikirjasto.domain.ReadingTipService;
 
 public class CreateReadingTip extends Command {

@@ -17,8 +17,8 @@ public class Search extends Command {
         try {
 
             io.output("Enter search term: ");
-            String input = io.input();
-            ArrayList<ReadingTip> tips = rtService.searchReadingTips(input);
+            String userInput = io.input();
+            ArrayList<ReadingTip> tips = rtService.searchReadingTips(userInput);
             if (tips.isEmpty()) {
                 io.output("No tips");
             }

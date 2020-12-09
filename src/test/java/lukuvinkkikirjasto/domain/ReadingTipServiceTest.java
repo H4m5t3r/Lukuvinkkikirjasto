@@ -1,11 +1,7 @@
 package lukuvinkkikirjasto.domain;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import lukuvinkkikirjasto.dao.Database;
-import lukuvinkkikirjasto.ui.IO;
-import lukuvinkkikirjasto.ui.Unknown;
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import static org.mockito.Mockito.*;
@@ -43,4 +39,11 @@ public class ReadingTipServiceTest {
         rtService.delete(1);
         verify(fakeDatabase).delete(1);
     }
+    
+    @Test
+    public void searchReadingTipsSearchesTips() throws SQLException {
+        rtService.searchReadingTips("search");
+        verify(fakeDatabase).searchFromTips("search");
+    } 
+    
 }
