@@ -7,7 +7,9 @@ import lukuvinkkikirjasto.domain.ReadingTip;
 
 public interface Database {
 
-    void create(String title, String description) throws SQLException;
+    void createDefault(String title, String description) throws SQLException;
+
+    void createBook(String writer, String name, String isbn, String year) throws SQLException;
 
     ArrayList<ReadingTip> getTips() throws SQLException;
     

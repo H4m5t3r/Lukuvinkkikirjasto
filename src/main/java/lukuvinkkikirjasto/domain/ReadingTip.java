@@ -1,53 +1,49 @@
 package lukuvinkkikirjasto.domain;
 
-public class ReadingTip {
+import java.util.HashMap;
+
+public abstract class ReadingTip {
     private int id;
-    private String header;
-    private String description;
     private boolean read;
-    
-    public ReadingTip(int id, String title, String description, boolean read) {
+    private HashMap<String, String> fields;
+    private String type;
+
+    public ReadingTip(int id, boolean read, String type) {
         this.id = id;
-        this.header = title;
-        this.description = description;
         this.read = read;
+        this.type = type;
+        this.fields = new HashMap<>();
     }
 
-    public ReadingTip(int id, String title, String description) {
-        this(id, title, description, false);
+    public String getType() {
+        return this.type;
     }
 
-    public String getHeader() {
-        return header;
+    public String[] getFields() {
+        return (String[]) this.fields.keySet().toArray();
     }
 
-    public String getDescription() {
-        return description;
+    public boolean isField(String field) {
+        return this.fields.containsKey(field);
     }
-    
-    public boolean getReadStatus() {
-        return read;
+
+    protected void setField(String field, String value) {
+        this.fields.put(field, value);
     }
-    
+
+    protected String getField(String field) {
+        return this.fields.get(field);
+    }
+
     public int getId() {
         return this.id;
     }
 
-    public void setTitle(String title) {
-        this.header = title;
+    public boolean getReadStatus() {
+        return this.read;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setReadStatus(boolean status) {
+        this.read = status;
     }
-    
-    public void setReadStatus(Boolean read) {
-        this.read = read;
-    }
-    
-    @Override
-    public String toString() {
-        return ("ID: " + this.id + "\nHeader: " + this.header + "\nDescription: " + this.description);
-    }
-    
 }
