@@ -29,14 +29,14 @@ public class SQLDatabaseTest {
     @Test
     public void readingTipIsCreatedAndIsIncludedInTheList() throws SQLException {
         database.createDefault("Test Item", "Test description");
-        assertEquals(database.getTips().get(0).getField("header"), "Test Item");
-        assertEquals(database.getTips().get(0).getField("description"), "Test description");
+        assertEquals(database.getTips("all").get(0).getField("header"), "Test Item");
+        assertEquals(database.getTips("all").get(0).getField("description"), "Test description");
     }
 
     @Test
     public void containsIdFindsExistingId() throws SQLException {
         database.createDefault("Test Item", "Test description");
-        int id = database.getTips().get(0).getId();
+        int id = database.getTips("all").get(0).getId();
         assertTrue(database.containsId(id));
     }
 
@@ -50,24 +50,24 @@ public class SQLDatabaseTest {
     @Test
     public void editHeaderChangesAreSaved() throws SQLException {
         database.createDefault("Header", "Desc");
-        int id = database.getTips().get(0).getId();
+        int id = database.getTips("all").get(0).getId();
         database.editHeader(id, "Edited header");
-        assertEquals("Edited header", database.getTips().get(0).getField("header"));
+        assertEquals("Edited header", database.getTips("all").get(0).getField("header"));
     }
 
     @Test
     public void editDescriptionChangesAreSaved() throws SQLException {
         database.createDefault("Header", "Desc");
-        int id = database.getTips().get(0).getId();
+        int id = database.getTips("all").get(0).getId();
         database.editDescription(id, "Edited description");
-        assertEquals("Edited description", database.getTips().get(0).getField("description"));
+        assertEquals("Edited description", database.getTips("all").get(0).getField("description"));
     }
    
     @Test
     public void readingTipIsMarkedAsReadCorrectly() throws SQLException {
         database.createDefault("Test Item", "Test description");
         database.setReadStatus(1, true);
-        ArrayList<ReadingTip> tipList = database.getTips();
+        ArrayList<ReadingTip> tipList = database.getTips("all");
         assertEquals(true, tipList.get(0).getReadStatus());
     }
     
@@ -75,9 +75,9 @@ public class SQLDatabaseTest {
     public void onlyReadReadingTipsAreListedWhenAsked() throws SQLException {
         database.createDefault("Test Item", "Test description");
         database.createDefault("New Test Item", "New test description");
-        ArrayList<ReadingTip> tipList = database.getTips();
+        ArrayList<ReadingTip> tipList = database.getTips("all");
         database.setReadStatus(1, true);
-        tipList = database.getReadOrUnreadTips(true);
+        tipList = database.getTips("read");
         assertEquals(1, tipList.size());
         assertEquals(tipList.get(0).toString(), new DefaultReadingTip(1, true, "Test Item", "Test description").toString());
     }
@@ -86,9 +86,9 @@ public class SQLDatabaseTest {
     public void onlyUnreadReadingTipsAreListedWhenAsked() throws SQLException {
         database.createDefault("Test Item", "Test description");
         database.createDefault("New Test Item", "New test description");
-        ArrayList<ReadingTip> tipList = database.getTips();
+        ArrayList<ReadingTip> tipList = database.getTips("all");
         database.setReadStatus(1, true);
-        tipList = database.getReadOrUnreadTips(false);
+        tipList = database.getTips("unread");
         assertEquals(1, tipList.size());
         assertEquals(tipList.get(0).toString(), new DefaultReadingTip(2, true, "New Test Item", "New test description").toString());
     }
@@ -96,10 +96,10 @@ public class SQLDatabaseTest {
     @Test
     public void readingTipIsDeletedFromDatabase() throws SQLException {
         database.createDefault("Test Item", "Test description");
-        ArrayList<ReadingTip> tipList = database.getTips();
+        ArrayList<ReadingTip> tipList = database.getTips("all");
         assertEquals(1, tipList.size());
         database.delete(1);
-        tipList = database.getTips();
+        tipList = database.getTips("all");
         assertEquals(0, tipList.size());
     }
     

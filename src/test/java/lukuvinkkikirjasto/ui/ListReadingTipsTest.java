@@ -30,7 +30,7 @@ public class ListReadingTipsTest {
         readAndUnreadTips = new ArrayList<>();
         readAndUnreadTips.add(new DefaultReadingTip(1, true, "title", "description"));
         readAndUnreadTips.add(new DefaultReadingTip(2, false, "a", "b"));
-        when(rtService.getTips()).thenReturn(startingTips);
+        when(rtService.getTips("all")).thenReturn(startingTips);
         rtService.add("asd", "testi");
         listReadingTips = new ListReadingTips(io, rtService);
     }
@@ -45,7 +45,7 @@ public class ListReadingTipsTest {
     
     @Test
     public void listReadingTipsPrintsRightMessageWhenNoTips() throws SQLException {
-        when(rtService.getTips()).thenReturn(new ArrayList<>());
+        when(rtService.getTips("all")).thenReturn(new ArrayList<>());
         when(io.input()).thenReturn("all");
         listReadingTips.execute();
         verify(io).output("No tips");
@@ -55,19 +55,19 @@ public class ListReadingTipsTest {
     public void unreadTipsListingCallsCorrectMethod() throws SQLException {
         when(io.input()).thenReturn("unread");
         listReadingTips.execute();
-        verify(rtService).getReadOrUnreadTips(false);
+        verify(rtService).getTips("unread");
     }
     
     @Test
     public void readTipsListingCallsCorrectMethod() throws SQLException {
         when(io.input()).thenReturn("read");
         listReadingTips.execute();
-        verify(rtService).getReadOrUnreadTips(true);
+        verify(rtService).getTips("read");
     }
     
     @Test
     public void readTipsGivesRightMessageWhenNoReadTips() throws SQLException {
-        when(rtService.getReadOrUnreadTips(true)).thenReturn(new ArrayList<>());
+        when(rtService.getTips("read")).thenReturn(new ArrayList<>());
         when(io.input()).thenReturn("read");
         listReadingTips.execute();
         verify(io).output("No tips");
@@ -75,7 +75,7 @@ public class ListReadingTipsTest {
     
     @Test
     public void unreadTipsGivesRightMessageWhenNoReadTips() throws SQLException {
-        when(rtService.getReadOrUnreadTips(false)).thenReturn(new ArrayList<>());
+        when(rtService.getTips("unread")).thenReturn(new ArrayList<>());
         when(io.input()).thenReturn("unread");
         listReadingTips.execute();
         verify(io).output("No tips");
@@ -84,7 +84,7 @@ public class ListReadingTipsTest {
     @Test
     public void readTipsAreListed() throws SQLException {
         readAndUnreadTips.removeIf(tip -> tip.getReadStatus() == false);
-        when(rtService.getReadOrUnreadTips(true)).thenReturn(readAndUnreadTips);
+        when(rtService.getTips("read")).thenReturn(readAndUnreadTips);
         when(io.input()).thenReturn("read");
         listReadingTips.execute();
         verify(io).output(new DefaultReadingTip(1, true, "title", "description").toString() + "\n");
@@ -93,7 +93,7 @@ public class ListReadingTipsTest {
     @Test
     public void unreadTipsAreListed() throws SQLException {
         readAndUnreadTips.removeIf(tip -> tip.getReadStatus() == true);
-        when(rtService.getReadOrUnreadTips(false)).thenReturn(readAndUnreadTips);
+        when(rtService.getTips("unread")).thenReturn(readAndUnreadTips);
         when(io.input()).thenReturn("unread");
         listReadingTips.execute();
         verify(io).output(new DefaultReadingTip(2, false,  "a", "b").toString() + "\n");

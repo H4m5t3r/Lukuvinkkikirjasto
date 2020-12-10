@@ -43,12 +43,8 @@ public class ReadingTipService {
         return database.containsId(id);
     }
 
-    public ArrayList<ReadingTip> getTips() throws SQLException {
-        return database.getTips();
-    }
-
-    public ArrayList<ReadingTip> getReadOrUnreadTips(boolean read) throws SQLException {
-        return database.getReadOrUnreadTips(read);
+    public ArrayList<ReadingTip> getTips(String option) throws SQLException {
+        return database.getTips(option);
     }
 
     public ArrayList<ReadingTip> searchReadingTips(String search) throws SQLException {

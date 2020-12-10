@@ -76,7 +76,7 @@ public class Stepdefs {
         rtService.add(header, desc);
         verify(fakeDatabase).createDefault(header, desc);
         list.add(new DefaultReadingTip(list.size()+1, false, header, desc));
-        when(fakeDatabase.getTips()).thenReturn(list);
+        when(fakeDatabase.getTips("all")).thenReturn(list);
     }
 
     @Given("reading tip with id {int} is marked as read")
@@ -93,7 +93,7 @@ public class Stepdefs {
 
     @Then("tip with id, header {string} and description {string} is listed")
     public void tipWithIdAndHeaderAndDescriptionIsListed(String header, String desc) throws SQLException {
-        assertTrue(readingTipExistsInList(fakeDatabase.getTips(), header, desc));
+        assertTrue(readingTipExistsInList(fakeDatabase.getTips("all"), header, desc));
 
         verify(io, times(2)).output("Which tips to list? Type unread/read (default: all)" 
         + "ID: " + anyString() + "\n" + "Header: " + header + "\n" + "Description: " + desc + "\n");

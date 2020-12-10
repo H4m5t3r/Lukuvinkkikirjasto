@@ -93,9 +93,16 @@ public class SQLDatabase implements Database {
     }
 
     @Override
-    public ArrayList<ReadingTip> getTips() throws SQLException {
+    public ArrayList<ReadingTip> getTips(String option) throws SQLException {
         ArrayList<ReadingTip> tipList = new ArrayList<>();
-        PreparedStatement p = db.prepareStatement("SELECT * FROM Tips");
+        PreparedStatement p;
+        if (option.equals("unread")) {
+            p = db.prepareStatement("SELECT * FROM Tips WHERE read=false");
+        } else if (option.equals("read")) {
+            p = db.prepareStatement("SELECT * FROM Tips WHERE read=true");
+        } else {
+            p = db.prepareStatement("SELECT * FROM Tips");
+        }
         ResultSet r = p.executeQuery();
         while (r.next()) {
             String type = r.getString("type");
@@ -199,23 +206,6 @@ public class SQLDatabase implements Database {
         p.setInt(2, id);
         p.executeUpdate();
         p.close();
-    }
-
-    @Override
-    public ArrayList<ReadingTip> getReadOrUnreadTips(boolean read) throws SQLException {
-        ArrayList<ReadingTip> tipList = new ArrayList<>();
-        PreparedStatement p = db.prepareStatement("SELECT * FROM TIPS WHERE read=?");
-        p.setBoolean(1, read);
-        ResultSet r = p.executeQuery();
-        while (r.next()) {
-            tipList.add(new DefaultReadingTip(
-                    r.getInt("id"),
-                    r.getBoolean("read"),
-                    r.getString("title"),
-                    r.getString("description")
-            ));
-        }
-        return tipList;
     }
 
     public ArrayList<ReadingTip> searchFromTips(String text) throws SQLException {

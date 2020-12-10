@@ -17,7 +17,7 @@ public interface Database {
     
     void createVideo(String name, String link, String published, String description) throws SQLException;
     
-    ArrayList<ReadingTip> getTips() throws SQLException;
+    ArrayList<ReadingTip> getTips(String option) throws SQLException;
     
     void editHeader(int id, String header) throws SQLException;
 
@@ -30,8 +30,6 @@ public interface Database {
     void delete(int id) throws SQLException;
     
     void setReadStatus(int id, boolean status) throws SQLException;
-
-    ArrayList<ReadingTip> getReadOrUnreadTips(boolean read) throws SQLException;
 
     ArrayList<ReadingTip> searchFromTips(String text) throws SQLException;
 }
