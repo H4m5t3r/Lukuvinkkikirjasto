@@ -19,7 +19,31 @@ public class ReadingTipServiceTest {
     @Test
     public void addAddsReadingTipToDatabase() throws SQLException {
         rtService.add("test", "asd");
-        verify(fakeDatabase).create("test", "asd");
+        verify(fakeDatabase).createDefault("test", "asd");
+    }
+    
+    @Test
+    public void addBookAddsBookToDatabase() throws SQLException {
+        rtService.addBook("writer", "test", "!!!", "2020", "asd");
+        verify(fakeDatabase).createBook("writer", "test", "!!!", "2020", "asd");
+    }
+    
+    @Test
+    public void addPodcastAddsPodcastToDatabase() throws SQLException {
+        rtService.addPodcast("host", "test", "ohtu.com", "asd");
+        verify(fakeDatabase).createPodcast("host", "test", "ohtu.com", "asd");
+    }
+    
+    @Test
+    public void addBlogAddsBlogToDatabase() throws SQLException {
+        rtService.addBlog("writer", "test", "ohtu.com", "asd");
+        verify(fakeDatabase).createBlog("writer", "test", "ohtu.com", "asd");
+    }
+    
+    @Test
+    public void addVideoAddsVideoToDatabase() throws SQLException {
+        rtService.addVideo("test", "ohtu.com", "2020", "asd");
+        verify(fakeDatabase).createVideo("test", "ohtu.com", "2020", "asd");
     }
 
     @Test

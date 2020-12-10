@@ -19,11 +19,11 @@ public class ListReadingTips extends Command {
             io.output("Which tips to list? Type unread/read (default: all)");
             String input = io.input();
             if (input.equals("unread")) {
-                tips = rtService.getReadOrUnreadTips(false);
+                tips = rtService.getTips("unread");
             } else if (input.equals("read")) {
-                tips = rtService.getReadOrUnreadTips(true);
+                tips = rtService.getTips("read");
             } else {
-                tips = rtService.getTips();
+                tips = rtService.getTips("all");
             }
 
             if (tips.isEmpty()) {

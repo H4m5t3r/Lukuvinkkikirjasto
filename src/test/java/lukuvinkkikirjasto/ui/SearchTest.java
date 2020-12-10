@@ -3,6 +3,7 @@ package lukuvinkkikirjasto.ui;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import lukuvinkkikirjasto.domain.DefaultReadingTip;
 import lukuvinkkikirjasto.domain.ReadingTip;
 import lukuvinkkikirjasto.domain.ReadingTipService;
 import org.junit.Before;
@@ -23,7 +24,7 @@ public class SearchTest {
         search = new Search(io, rtService);
         
         searchList = new ArrayList<>();
-        searchList.add(new ReadingTip(1, "My title", "My description"));
+        searchList.add(new DefaultReadingTip(1, false, "My title", "My description"));
         when(rtService.searchReadingTips("title")).thenReturn(searchList); 
 
     }
@@ -35,7 +36,7 @@ public class SearchTest {
         verify(io).output("Enter search term: ");
         verify(io, times(1)).input();
         verify(rtService).searchReadingTips("title");
-        verify(io).output(new ReadingTip(1, "My title", "My description").toString() + "\n");
+        verify(io).output(new DefaultReadingTip(1, false, "My title", "My description").toString() + "\n");
     }
 
     @Test

@@ -3,6 +3,7 @@ package lukuvinkkikirjasto.dao;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import lukuvinkkikirjasto.domain.DefaultReadingTip;
 import lukuvinkkikirjasto.domain.ReadingTip;
 import org.junit.*;
 import static org.junit.Assert.assertEquals;
@@ -27,108 +28,149 @@ public class SQLDatabaseTest {
 
     @Test
     public void readingTipIsCreatedAndIsIncludedInTheList() throws SQLException {
-        database.create("Test Item", "Test description");
-        assertEquals(database.getTips().get(0).getHeader(), "Test Item");
-        assertEquals(database.getTips().get(0).getDescription(), "Test description");
+        database.createDefault("Test Item", "Test description");
+        assertEquals(database.getTips("all").get(0).getField("header"), "Test Item");
+        assertEquals(database.getTips("all").get(0).getField("description"), "Test description");
+    }
+    
+    @Test
+    public void bookIsCreatedAndIsIncludedInTheList() throws SQLException {
+        database.createBook("Test writer", "Test Item", "Test isbn", "Test year", "Test description");
+        assertEquals(database.getTips("all").get(0).getType(), "book");
+        assertEquals(database.getTips("all").get(0).getField("writer"), "Test writer");
+        assertEquals(database.getTips("all").get(0).getField("name"), "Test Item");
+        assertEquals(database.getTips("all").get(0).getField("isbn"), "Test isbn");
+        assertEquals(database.getTips("all").get(0).getField("year"), "Test year");
+        assertEquals(database.getTips("all").get(0).getField("description"), "Test description");
+    }
+    
+    @Test
+    public void podcastIsCreatedAndIsIncludedInTheList() throws SQLException {
+        database.createPodcast("Test host", "Test Item", "Test link", "Test description");
+        assertEquals(database.getTips("all").get(0).getType(), "podcast");
+        assertEquals(database.getTips("all").get(0).getField("host"), "Test host");
+        assertEquals(database.getTips("all").get(0).getField("name"), "Test Item");
+        assertEquals(database.getTips("all").get(0).getField("link"), "Test link");
+        assertEquals(database.getTips("all").get(0).getField("description"), "Test description");
+    }
+    
+    @Test
+    public void blogIsCreatedAndIsIncludedInTheList() throws SQLException {
+        database.createBlog("Test writer", "Test Item", "Test link", "Test description");
+        assertEquals(database.getTips("all").get(0).getType(), "blog");
+        assertEquals(database.getTips("all").get(0).getField("writer"), "Test writer");
+        assertEquals(database.getTips("all").get(0).getField("name"), "Test Item");
+        assertEquals(database.getTips("all").get(0).getField("link"), "Test link");
+        assertEquals(database.getTips("all").get(0).getField("description"), "Test description");
+    }
+    
+    @Test
+    public void videoIsCreatedAndIsIncludedInTheList() throws SQLException {
+        database.createVideo("Test Item", "Test link", "Test published", "Test description");
+        assertEquals(database.getTips("all").get(0).getType(), "video");
+        assertEquals(database.getTips("all").get(0).getField("name"), "Test Item");
+        assertEquals(database.getTips("all").get(0).getField("link"), "Test link");
+        assertEquals(database.getTips("all").get(0).getField("published"), "Test published");
+        assertEquals(database.getTips("all").get(0).getField("description"), "Test description");
     }
 
     @Test
     public void containsIdFindsExistingId() throws SQLException {
-        database.create("Test Item", "Test description");
-        int id = database.getTips().get(0).getId();
+        database.createDefault("Test Item", "Test description");
+        int id = database.getTips("all").get(0).getId();
         assertTrue(database.containsId(id));
     }
 
     @Test
     public void containsIdDoesNotFindNonExistingId() throws SQLException {
-        database.create("Test Item", "Test description");
+        database.createDefault("Test Item", "Test description");
         int id = -1;
         assertFalse(database.containsId(id));
     }
     
     @Test
     public void editHeaderChangesAreSaved() throws SQLException {
-        database.create("Header", "Desc");
-        int id = database.getTips().get(0).getId();
+        database.createDefault("Header", "Desc");
+        int id = database.getTips("all").get(0).getId();
         database.editHeader(id, "Edited header");
-        assertEquals("Edited header", database.getTips().get(0).getHeader());
+        assertEquals("Edited header", database.getTips("all").get(0).getField("header"));
     }
 
     @Test
     public void editDescriptionChangesAreSaved() throws SQLException {
-        database.create("Header", "Desc");
-        int id = database.getTips().get(0).getId();
+        database.createDefault("Header", "Desc");
+        int id = database.getTips("all").get(0).getId();
         database.editDescription(id, "Edited description");
-        assertEquals("Edited description", database.getTips().get(0).getDescription());
+        assertEquals("Edited description", database.getTips("all").get(0).getField("description"));
     }
    
     @Test
     public void readingTipIsMarkedAsReadCorrectly() throws SQLException {
-        database.create("Test Item", "Test description");
+        database.createDefault("Test Item", "Test description");
         database.setReadStatus(1, true);
-        ArrayList<ReadingTip> tipList = database.getTips();
+        ArrayList<ReadingTip> tipList = database.getTips("all");
         assertEquals(true, tipList.get(0).getReadStatus());
     }
     
     @Test
     public void onlyReadReadingTipsAreListedWhenAsked() throws SQLException {
-        database.create("Test Item", "Test description");
-        database.create("New Test Item", "New test description");
-        ArrayList<ReadingTip> tipList = database.getTips();
+        database.createDefault("Test Item", "Test description");
+        database.createDefault("New Test Item", "New test description");
+        ArrayList<ReadingTip> tipList = database.getTips("all");
         database.setReadStatus(1, true);
-        tipList = database.getReadOrUnreadTips(true);
+        tipList = database.getTips("read");
         assertEquals(1, tipList.size());
-        assertEquals(tipList.get(0).toString(), new ReadingTip(1, "Test Item", "Test description").toString());
+        assertEquals(tipList.get(0).toString(), new DefaultReadingTip(1, true, "Test Item", "Test description").toString());
     }
         
     @Test
     public void onlyUnreadReadingTipsAreListedWhenAsked() throws SQLException {
-        database.create("Test Item", "Test description");
-        database.create("New Test Item", "New test description");
-        ArrayList<ReadingTip> tipList = database.getTips();
+        database.createDefault("Test Item", "Test description");
+        database.createDefault("New Test Item", "New test description");
+        ArrayList<ReadingTip> tipList = database.getTips("all");
         database.setReadStatus(1, true);
-        tipList = database.getReadOrUnreadTips(false);
+        tipList = database.getTips("unread");
         assertEquals(1, tipList.size());
-        assertEquals(tipList.get(0).toString(), new ReadingTip(2, "New Test Item", "New test description").toString());
+        assertEquals(tipList.get(0).toString(), new DefaultReadingTip(2, true, "New Test Item", "New test description").toString());
     }
     
     @Test
     public void readingTipIsDeletedFromDatabase() throws SQLException {
-        database.create("Test Item", "Test description");
-        ArrayList<ReadingTip> tipList = database.getTips();
+        database.createDefault("Test Item", "Test description");
+        ArrayList<ReadingTip> tipList = database.getTips("all");
         assertEquals(1, tipList.size());
         database.delete(1);
-        tipList = database.getTips();
+        tipList = database.getTips("all");
         assertEquals(0, tipList.size());
     }
     
     @Test
     public void readingTipIsFoundWhenSearchedWithCorrectString() throws SQLException {
-        database.create("My title", "My description");
-        database.create("Another Item To Add", "Descriptive text");
-        database.create("One more thing", "Already forgotten");
+        database.createDefault("My title", "My description");
+        database.createDefault("Another Item To Add", "Descriptive text");
+        database.createDefault("One more thing", "Already forgotten");
         ArrayList<ReadingTip> searchList = database.searchFromTips("add");
-        assertEquals(searchList.get(0).toString(), new ReadingTip(2, "Another Item To Add", "Descriptive text").toString());   
+        assertEquals(searchList.get(0).toString(), new DefaultReadingTip(2, false, "Another Item To Add", "Descriptive text").toString());   
     }
     
     @Test
     public void readingTipsNotFoundWhenSearchedStringNotInTips() throws SQLException {
-        database.create("My title", "My description");
-        database.create("Another Item To Add", "Descriptive text");
-        database.create("One more thing", "Already forgotten");
+        database.createDefault("My title", "My description");
+        database.createDefault("Another Item To Add", "Descriptive text");
+        database.createDefault("One more thing", "Already forgotten");
         ArrayList<ReadingTip> searchList = database.searchFromTips("xxx");
         assertEquals(0, searchList.size());
     }
     
     @Test
     public void manyReadingTipsFoundWhenSearchedWithCorrectString() throws SQLException {
-        database.create("My title", "My description");
-        database.create("Another Item To Add", "Descriptive text");
-        database.create("One more thing", "Already forgotten");
+        database.createDefault("My title", "My description");
+        database.createDefault("Another Item To Add", "Descriptive text");
+        database.createDefault("One more thing", "Already forgotten");
         ArrayList<ReadingTip> searchList = database.searchFromTips("descript");
         assertEquals(2, searchList.size());
-        assertEquals(searchList.get(0).toString(), new ReadingTip(1, "My title", "My description").toString());
-        assertEquals(searchList.get(1).toString(), new ReadingTip(2, "Another Item To Add", "Descriptive text").toString());
+        assertEquals(searchList.get(0).toString(), new DefaultReadingTip(1, false, "My title", "My description").toString());
+        assertEquals(searchList.get(1).toString(), new DefaultReadingTip(2, false, "Another Item To Add", "Descriptive text").toString());
     }
     
     

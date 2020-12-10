@@ -12,9 +12,25 @@ public class ReadingTipService {
     }
 
     public void add(String header, String description) throws SQLException {
-        database.create(header, description);
+        database.createDefault(header, description);
     }
 
+    public void addBook(String writer, String name, String isbn, String year, String description) throws SQLException {
+        database.createBook(writer, name, isbn, year, description);
+    }
+    
+    public void addPodcast(String host, String name, String link, String description) throws SQLException {
+        database.createPodcast(host, name, link, description);
+    }
+    
+    public void addBlog(String writer, String name, String link, String description) throws SQLException {
+        database.createBlog(writer, name, link, description);
+    }    
+
+    public void addVideo(String name, String link, String published, String description) throws SQLException {
+        database.createVideo(name, link, published, description);
+    }   
+        
     public void editHeader(int id, String header) throws SQLException {
         database.editHeader(id, header);
     }
@@ -27,12 +43,12 @@ public class ReadingTipService {
         return database.containsId(id);
     }
 
-    public ArrayList<ReadingTip> getTips() throws SQLException {
-        return database.getTips();
+    public ArrayList<ReadingTip> getTips(String option) throws SQLException {
+        return database.getTips(option);
     }
 
-    public ArrayList<ReadingTip> getReadOrUnreadTips(boolean read) throws SQLException {
-        return database.getReadOrUnreadTips(read);
+    public ReadingTip getTip(int id) throws SQLException {
+        return database.getTip(id);
     }
 
     public ArrayList<ReadingTip> searchReadingTips(String search) throws SQLException {
@@ -46,4 +62,8 @@ public class ReadingTipService {
     public void setReadStatus(int id, boolean status) throws SQLException {
         database.setReadStatus(id, status);
     }
+
+	public void editField(int id, String field, String content) throws SQLException {
+        database.editField(id, field, content);
+	}
 }
