@@ -15,8 +15,12 @@ public class ReadingTipService {
         database.createDefault(header, description);
     }
 
-    public void addBook(String writer, String name, String isbn, String year) throws SQLException {
-        database.createBook(writer, name, isbn, year);
+    public void addBook(String writer, String name, String isbn, String year, String description) throws SQLException {
+        database.createBook(writer, name, isbn, year, description);
+    }
+    
+    public void addPodcast(String host, String name, String link, String description) throws SQLException {
+        database.createPodcast(host, name, link, description);
     }
 
     public void editHeader(int id, String header) throws SQLException {

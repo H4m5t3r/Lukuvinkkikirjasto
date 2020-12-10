@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import lukuvinkkikirjasto.domain.BookReadingTip;
 import lukuvinkkikirjasto.domain.DefaultReadingTip;
+import lukuvinkkikirjasto.domain.PodcastReadingTip;
 import lukuvinkkikirjasto.domain.ReadingTip;
 
 // https://tikape-k20.mooc.fi/sqlite-java
@@ -20,11 +21,11 @@ public class SQLDatabase implements Database {
                 + "type VARCHAR NOT NULL, "
                 + "read BOOLEAN, "
                 + "title VARCHAR, "
-                + "description VARCHAR, "
                 + "author VARCHAR, "
                 + "isbn VARCHAR, "
                 + "year VARCHAR, "
-                + "link VARCHAR)");
+                + "link VARCHAR, "
+                + "description VARCHAR)");
     }
 
     public void createDefault(String title, String description) throws SQLException {
@@ -38,14 +39,28 @@ public class SQLDatabase implements Database {
     }
 
     @Override
-    public void createBook(String writer, String name, String isbn, String year) throws SQLException {
-        PreparedStatement p = db.prepareStatement("INSERT INTO Tips(title, author, year, isbn, read, type) VALUES (?, ?, ?, ?, ?, ?)");
+    public void createBook(String writer, String name, String isbn, String year, String description) throws SQLException {
+        PreparedStatement p = db.prepareStatement("INSERT INTO Tips(title, author, year, isbn, description, read, type) VALUES (?, ?, ?, ?, ?, ?, ?)");
         p.setString(1, name);
         p.setString(2, writer);
         p.setString(3, year);
         p.setString(4, isbn);
+        p.setString(5, description);
+        p.setBoolean(6, false);
+        p.setString(7, "book");
+        p.executeUpdate();
+        p.close();
+    }
+    
+    @Override
+    public void createPodcast(String host, String name, String link, String description) throws SQLException {
+        PreparedStatement p = db.prepareStatement("INSERT INTO Tips(title, author, link, description, read, type) VALUES (?, ?, ?, ?, ?, ?)");
+        p.setString(1, name);
+        p.setString(2, host);
+        p.setString(3, link);
+        p.setString(4, description);
         p.setBoolean(5, false);
-        p.setString(6, "book");
+        p.setString(6, "podcast");
         p.executeUpdate();
         p.close();
     }
@@ -64,7 +79,17 @@ public class SQLDatabase implements Database {
                         r.getString("author"),
                         r.getString("title"),
                         r.getString("isbn"),
-                        r.getString("year")
+                        r.getString("year"),
+                        r.getString("description")
+                ));
+            } else if (type.equals("podcast")) {
+                tipList.add(new PodcastReadingTip(
+                        r.getInt("id"),
+                        r.getBoolean("read"),
+                        r.getString("author"),
+                        r.getString("title"),
+                        r.getString("link"),
+                        r.getString("description")
                 ));
             } else if (type.equals("default")) {
                 tipList.add(new DefaultReadingTip(
@@ -164,6 +189,8 @@ public class SQLDatabase implements Database {
         }
         return tipList;
     }
+
+    
 
 
 }

@@ -9,7 +9,9 @@ public interface Database {
 
     void createDefault(String title, String description) throws SQLException;
 
-    void createBook(String writer, String name, String isbn, String year) throws SQLException;
+    void createBook(String writer, String name, String isbn, String year, String description) throws SQLException;
+    
+    void createPodcast(String host, String name, String link, String description) throws SQLException;
 
     ArrayList<ReadingTip> getTips() throws SQLException;
     
