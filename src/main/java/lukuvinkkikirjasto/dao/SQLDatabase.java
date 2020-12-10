@@ -2,13 +2,14 @@ package lukuvinkkikirjasto.dao;
 
 import java.sql.*;
 import java.util.ArrayList;
+import lukuvinkkikirjasto.domain.BlogReadingTip;
 
 import lukuvinkkikirjasto.domain.BookReadingTip;
 import lukuvinkkikirjasto.domain.DefaultReadingTip;
 import lukuvinkkikirjasto.domain.PodcastReadingTip;
 import lukuvinkkikirjasto.domain.ReadingTip;
+import lukuvinkkikirjasto.domain.VideoReadingTip;
 
-// https://tikape-k20.mooc.fi/sqlite-java
 public class SQLDatabase implements Database {
 
     Connection db;
@@ -23,7 +24,7 @@ public class SQLDatabase implements Database {
                 + "title VARCHAR, "
                 + "author VARCHAR, "
                 + "isbn VARCHAR, "
-                + "year VARCHAR, "
+                + "published VARCHAR, "
                 + "link VARCHAR, "
                 + "description VARCHAR)");
     }
@@ -40,9 +41,9 @@ public class SQLDatabase implements Database {
 
     @Override
     public void createBook(String writer, String name, String isbn, String year, String description) throws SQLException {
-        PreparedStatement p = db.prepareStatement("INSERT INTO Tips(title, author, year, isbn, description, read, type) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        p.setString(1, name);
-        p.setString(2, writer);
+        PreparedStatement p = db.prepareStatement("INSERT INTO Tips(author, title, published, isbn, description, read, type) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        p.setString(1, writer);
+        p.setString(2, name);
         p.setString(3, year);
         p.setString(4, isbn);
         p.setString(5, description);
@@ -54,13 +55,39 @@ public class SQLDatabase implements Database {
     
     @Override
     public void createPodcast(String host, String name, String link, String description) throws SQLException {
-        PreparedStatement p = db.prepareStatement("INSERT INTO Tips(title, author, link, description, read, type) VALUES (?, ?, ?, ?, ?, ?)");
-        p.setString(1, name);
-        p.setString(2, host);
+        PreparedStatement p = db.prepareStatement("INSERT INTO Tips(author, title, link, description, read, type) VALUES (?, ?, ?, ?, ?, ?)");
+        p.setString(1, host);
+        p.setString(2, name);
         p.setString(3, link);
         p.setString(4, description);
         p.setBoolean(5, false);
         p.setString(6, "podcast");
+        p.executeUpdate();
+        p.close();
+    }
+    
+    @Override
+    public void createBlog(String writer, String name, String link, String description) throws SQLException {
+        PreparedStatement p = db.prepareStatement("INSERT INTO Tips(author, title, link, description, read, type) VALUES (?, ?, ?, ?, ?, ?)");
+        p.setString(1, writer);
+        p.setString(2, name);
+        p.setString(3, link);
+        p.setString(4, description);
+        p.setBoolean(5, false);
+        p.setString(6, "blog");
+        p.executeUpdate();
+        p.close();
+    }
+    
+    @Override
+    public void createVideo(String name, String link, String published, String description) throws SQLException {
+        PreparedStatement p = db.prepareStatement("INSERT INTO Tips(title, link, published, description, read, type) VALUES (?, ?, ?, ?, ?, ?)");
+        p.setString(1, name);
+        p.setString(2, link);
+        p.setString(3, published);
+        p.setString(4, description);
+        p.setBoolean(5, false);
+        p.setString(6, "video");
         p.executeUpdate();
         p.close();
     }
@@ -79,7 +106,7 @@ public class SQLDatabase implements Database {
                         r.getString("author"),
                         r.getString("title"),
                         r.getString("isbn"),
-                        r.getString("year"),
+                        r.getString("published"),
                         r.getString("description")
                 ));
             } else if (type.equals("podcast")) {
@@ -89,6 +116,24 @@ public class SQLDatabase implements Database {
                         r.getString("author"),
                         r.getString("title"),
                         r.getString("link"),
+                        r.getString("description")
+                ));
+            } else if (type.equals("blog")) {
+                tipList.add(new BlogReadingTip(
+                        r.getInt("id"),
+                        r.getBoolean("read"),
+                        r.getString("author"),
+                        r.getString("title"),
+                        r.getString("link"),
+                        r.getString("description")
+                ));
+            } else if (type.equals("video")) {
+                tipList.add(new VideoReadingTip(
+                        r.getInt("id"),
+                        r.getBoolean("read"),
+                        r.getString("title"),
+                        r.getString("link"),
+                        r.getString("published"),                        
                         r.getString("description")
                 ));
             } else if (type.equals("default")) {

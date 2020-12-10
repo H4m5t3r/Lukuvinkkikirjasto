@@ -22,7 +22,15 @@ public class ReadingTipService {
     public void addPodcast(String host, String name, String link, String description) throws SQLException {
         database.createPodcast(host, name, link, description);
     }
+    
+    public void addBlog(String writer, String name, String link, String description) throws SQLException {
+        database.createBlog(writer, name, link, description);
+    }    
 
+    public void addVideo(String name, String link, String published, String description) throws SQLException {
+        database.createVideo(name, link, published, description);
+    }   
+        
     public void editHeader(int id, String header) throws SQLException {
         database.editHeader(id, header);
     }

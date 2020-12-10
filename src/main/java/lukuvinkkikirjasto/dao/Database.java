@@ -13,6 +13,10 @@ public interface Database {
     
     void createPodcast(String host, String name, String link, String description) throws SQLException;
 
+    void createBlog(String writer, String name, String link, String description) throws SQLException;
+    
+    void createVideo(String name, String link, String published, String description) throws SQLException;
+    
     ArrayList<ReadingTip> getTips() throws SQLException;
     
     void editHeader(int id, String header) throws SQLException;

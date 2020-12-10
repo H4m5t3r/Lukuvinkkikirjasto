@@ -11,6 +11,8 @@ public class UserInterface {
         "new            - add a new reading tip",
         "add book       - add a new book",
         "add podcast    - add a new podcast",
+        "add blog       - add a new blog",
+        "add video      - add a new video",
         "list           - lists reading tips by choice",
         "search         - search from tips by header or description",
         "edit header    - edit header of a tip",
@@ -29,6 +31,8 @@ public class UserInterface {
         commands.put("new", new CreateReadingTip(io, rtService));
         commands.put("add book", new AddBook(io, rtService));
         commands.put("add podcast", new AddPodcast(io, rtService));
+        commands.put("add blog", new AddBlog(io, rtService));
+        commands.put("add video", new AddVideo(io, rtService));
         commands.put("list", new ListReadingTips(io, rtService));
         commands.put("search", new Search(io, rtService));
         commands.put("edit header", new EditHeader(io, rtService));
