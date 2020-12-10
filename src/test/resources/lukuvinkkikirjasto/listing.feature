@@ -1,4 +1,4 @@
-Feature: The reading tips can be listed.
+Feature: As a user I can list the existing reading tips.
 
     Scenario: an empty list gives a "No tips" -notification
         Given command "list" is selected and option "all" is given

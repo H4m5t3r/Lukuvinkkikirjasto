@@ -1,4 +1,4 @@
-Feature: Reading tips can be edited.
+Feature: As a user I can edit an existing reading tip.
 
     Scenario: Header can be modified if valid ID is given
         Given tip with header "Hello Ruby" and description "intro to coding" is added

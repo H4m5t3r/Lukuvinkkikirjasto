@@ -1,6 +1,6 @@
-Feature: A reading tip can be added.
+Feature: As a user I can add a reding tip.
 
-    Scenario: Adding is successful with valid name and header
+    Scenario: Adding a general reading tip is successful with valid name and header
         Given command "add general" is selected
         Then message "Header: " is shown
         When header "Hello Ruby" and description "intro to coding" are given
