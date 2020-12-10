@@ -6,6 +6,7 @@ import io.cucumber.java.en.When;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import lukuvinkkikirjasto.dao.Database;
+import lukuvinkkikirjasto.domain.DefaultReadingTip;
 import lukuvinkkikirjasto.domain.ReadingTip;
 import lukuvinkkikirjasto.domain.ReadingTipService;
 import lukuvinkkikirjasto.ui.SystemIO;
@@ -57,7 +58,7 @@ public class Stepdefs {
 
     @Then("the book {string} is added.")
     public void theBookIsAdded(String header) throws SQLException {
-        verify(fakeDatabase).create(eq(header), anyString());
+        verify(fakeDatabase).createDefault(eq(header), anyString());
     }
 
     @Then("the tip with id {int} is removed.")
@@ -73,8 +74,8 @@ public class Stepdefs {
     @Given("tip with header {string} and description {string} is added")
     public void tipWithHeaderAndDescriptionIsAdded(String header, String desc) throws SQLException {
         rtService.add(header, desc);
-        verify(fakeDatabase).create(header, desc);
-        list.add(new ReadingTip(list.size()+1, header, desc));
+        verify(fakeDatabase).createDefault(header, desc);
+        list.add(new DefaultReadingTip(list.size()+1, false, header, desc));
         when(fakeDatabase.getTips()).thenReturn(list);
     }
 
@@ -100,7 +101,7 @@ public class Stepdefs {
 
     private boolean readingTipExistsInList(ArrayList<ReadingTip> tips, String header, String desc) {
         for (ReadingTip tip : tips) {
-            if (tip.getHeader().equals(header) && tip.getDescription().equals(desc)) {
+            if (tip.getField("header").equals(header) && tip.getField("description").equals(desc)) {
                 return true;
             }
         }
@@ -168,8 +169,8 @@ public class Stepdefs {
     @Given("the database contains 2 reading tips that match the search term: {string}, {string} and {string}, {string}")
     public void matchesFoundInDatabase(String header1, String desc1, String header2, String desc2) throws SQLException {
         ArrayList<ReadingTip> searchResults = new ArrayList<>();
-        searchResults.add(new ReadingTip(3, header1, desc1, false));
-        searchResults.add(new ReadingTip(7, header2, desc2, false));
+        searchResults.add(new DefaultReadingTip(3, false, header1, desc1));
+        searchResults.add(new DefaultReadingTip(7, false, header2, desc2));
         when(rtService.searchReadingTips(anyString())).thenReturn(searchResults);
     }
 

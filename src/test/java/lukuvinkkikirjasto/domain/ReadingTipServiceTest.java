@@ -19,7 +19,7 @@ public class ReadingTipServiceTest {
     @Test
     public void addAddsReadingTipToDatabase() throws SQLException {
         rtService.add("test", "asd");
-        verify(fakeDatabase).create("test", "asd");
+        verify(fakeDatabase).createDefault("test", "asd");
     }
 
     @Test

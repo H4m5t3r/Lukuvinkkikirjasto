@@ -10,6 +10,7 @@ import lukuvinkkikirjasto.domain.ReadingTipService;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
+import lukuvinkkikirjasto.domain.DefaultReadingTip;
 
 public class ListReadingTipsTest {
 
@@ -24,11 +25,11 @@ public class ListReadingTipsTest {
         io = mock(IO.class);
         rtService = mock(ReadingTipService.class);
         startingTips = new ArrayList<>();
-        startingTips.add(new ReadingTip(1, "title", "description"));
-        startingTips.add(new ReadingTip(2, "a", "b"));
+        startingTips.add(new DefaultReadingTip(1, false, "title", "description"));
+        startingTips.add(new DefaultReadingTip(2, false, "a", "b"));
         readAndUnreadTips = new ArrayList<>();
-        readAndUnreadTips.add(new ReadingTip(1, "title", "description", true));
-        readAndUnreadTips.add(new ReadingTip(2, "a", "b", false));
+        readAndUnreadTips.add(new DefaultReadingTip(1, true, "title", "description"));
+        readAndUnreadTips.add(new DefaultReadingTip(2, false, "a", "b"));
         when(rtService.getTips()).thenReturn(startingTips);
         rtService.add("asd", "testi");
         listReadingTips = new ListReadingTips(io, rtService);
@@ -38,8 +39,8 @@ public class ListReadingTipsTest {
     public void listReadingTipsGivesData() {
         when(io.input()).thenReturn("all");
         listReadingTips.execute();
-        verify(io).output(new ReadingTip(1, "title", "description").toString() + "\n");
-        verify(io).output(new ReadingTip(2, "a", "b").toString() + "\n");
+        verify(io).output(new DefaultReadingTip(1, false, "title", "description").toString() + "\n");
+        verify(io).output(new DefaultReadingTip(2, false, "a", "b").toString() + "\n");
     }
     
     @Test
@@ -86,7 +87,7 @@ public class ListReadingTipsTest {
         when(rtService.getReadOrUnreadTips(true)).thenReturn(readAndUnreadTips);
         when(io.input()).thenReturn("read");
         listReadingTips.execute();
-        verify(io).output(new ReadingTip(1, "title", "description").toString() + "\n");
+        verify(io).output(new DefaultReadingTip(1, true, "title", "description").toString() + "\n");
     }
     
     @Test
@@ -95,7 +96,7 @@ public class ListReadingTipsTest {
         when(rtService.getReadOrUnreadTips(false)).thenReturn(readAndUnreadTips);
         when(io.input()).thenReturn("unread");
         listReadingTips.execute();
-        verify(io).output(new ReadingTip(2, "a", "b").toString() + "\n");
+        verify(io).output(new DefaultReadingTip(2, false,  "a", "b").toString() + "\n");
     }
 
 }
