@@ -9,7 +9,7 @@ public class AddBlog extends Command {
         super(io, rtService);
     }
     
-     public void execute() {
+    public void execute() {
         io.output("Writer: ");
         String writer = io.input();
         io.output("Name: ");

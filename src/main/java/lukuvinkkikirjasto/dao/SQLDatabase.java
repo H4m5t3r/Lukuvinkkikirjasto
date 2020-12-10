@@ -94,7 +94,6 @@ public class SQLDatabase implements Database {
 
     @Override
     public ArrayList<ReadingTip> getTips(String option) throws SQLException {
-        ArrayList<ReadingTip> tipList = new ArrayList<>();
         PreparedStatement p;
         if (option.equals("unread")) {
             p = db.prepareStatement("SELECT * FROM Tips WHERE read=false");
@@ -103,7 +102,108 @@ public class SQLDatabase implements Database {
         } else {
             p = db.prepareStatement("SELECT * FROM Tips");
         }
+        return this.parseResult(p.executeQuery());
+    }
+
+    @Override
+    public void editHeader(int id, String header) throws SQLException {
+        PreparedStatement statement = db.prepareStatement("UPDATE Tips SET title=? Where id=?");
+        statement.setString(1, header);
+        statement.setInt(2, id);
+        statement.executeUpdate();
+        statement.close();
+    }
+
+    @Override
+    public void editDescription(int id, String description) throws SQLException {
+        PreparedStatement statement = db.prepareStatement("UPDATE Tips SET description=? Where id=?");
+        statement.setString(1, description);
+        statement.setInt(2, id);
+        statement.executeUpdate();
+        statement.close();
+    }
+
+    @Override
+    public void editField(int id, String field, String text) throws SQLException {
+        String realField;
+        switch (field){
+            case "writer":
+                realField = "author";
+                break;
+            case "host":
+                realField = "author";
+                break;
+            case "name":
+                realField = "title";
+                break;
+            case "year":
+                realField = "published";
+                break;
+            case "header":
+                realField = "title";
+                break;
+            default:
+                realField = field;
+        }
+        PreparedStatement statement = db.prepareStatement("UPDATE Tips SET " + realField + "=? Where id=?");
+        statement.setString(1, text);
+        statement.setInt(2, id);
+        statement.executeUpdate();
+        statement.close();
+    }
+
+    @Override
+    public Boolean containsId(int id) throws SQLException {
+        PreparedStatement p = db.prepareStatement("SELECT id FROM Tips WHERE id=?");
+        p.setInt(1, id);
         ResultSet r = p.executeQuery();
+        return r.next();
+    }
+
+    @Override
+    public void delete(int id) throws SQLException {
+        PreparedStatement p = db.prepareStatement("DELETE FROM Tips WHERE id=?");
+        p.setInt(1, id);
+        p.executeUpdate();
+        p.close();
+    }
+
+    @Override
+    public void setReadStatus(int id, boolean status) throws SQLException {
+        PreparedStatement p = db.prepareStatement("UPDATE Tips SET read=? Where id=?");
+        p.setBoolean(1, status);
+        p.setInt(2, id);
+        p.executeUpdate();
+        p.close();
+    }
+
+    public ArrayList<ReadingTip> searchFromTips(String text) throws SQLException {
+        ArrayList<ReadingTip> tipList = new ArrayList<>();
+        PreparedStatement p = db.prepareStatement("SELECT * FROM TIPS WHERE "
+            + "title LIKE ? "
+            + "OR author LIKE ? "
+            + "OR isbn LIKE ? "
+            + "OR published LIKE ? "
+            + "OR link LIKE ? "
+            + "OR description LIKE ?");
+        p.setString(1, "%" + text + "%");
+        p.setString(2, "%" + text + "%");
+        p.setString(3, "%" + text + "%");
+        p.setString(4, "%" + text + "%");
+        p.setString(5, "%" + text + "%");
+        p.setString(6, "%" + text + "%");
+        return this.parseResult(p.executeQuery());
+    }
+
+    @Override
+    public ReadingTip getTip(int id) throws SQLException {
+        PreparedStatement p = db.prepareStatement("SELECT * FROM Tips WHERE id=?");
+        p.setInt(1, id);
+        return this.parseResult(p.executeQuery()).get(0);
+    }
+
+    private ArrayList<ReadingTip> parseResult(ResultSet r) throws SQLException {
+        ArrayList<ReadingTip> tipList = new ArrayList<>();
         while (r.next()) {
             String type = r.getString("type");
             if (type.equals("book")) {
@@ -155,77 +255,6 @@ public class SQLDatabase implements Database {
         }
         return tipList;
     }
-
-    @Override
-    public void editHeader(int id, String header) throws SQLException {
-        PreparedStatement statement = db.prepareStatement("UPDATE Tips SET title=? Where id=?");
-        statement.setString(1, header);
-        statement.setInt(2, id);
-        statement.executeUpdate();
-        statement.close();
-    }
-
-    @Override
-    public void editDescription(int id, String description) throws SQLException {
-        PreparedStatement statement = db.prepareStatement("UPDATE Tips SET description=? Where id=?");
-        statement.setString(1, description);
-        statement.setInt(2, id);
-        statement.executeUpdate();
-        statement.close();
-    }
-
-    @Override
-    public void editField(int id, String field, String text) throws SQLException {
-        PreparedStatement statement = db.prepareStatement("UPDATE Tips SET " + field + "=? Where id=?");
-        statement.setString(1, text);
-        statement.setInt(2, id);
-        statement.executeUpdate();
-        statement.close();
-    }
-
-    @Override
-    public Boolean containsId(int id) throws SQLException {
-        PreparedStatement p = db.prepareStatement("SELECT id FROM Tips WHERE id=?");
-        p.setInt(1, id);
-        ResultSet r = p.executeQuery();
-        return r.next();
-    }
-
-    @Override
-    public void delete(int id) throws SQLException {
-        PreparedStatement p = db.prepareStatement("DELETE FROM Tips WHERE id=?");
-        p.setInt(1, id);
-        p.executeUpdate();
-        p.close();
-    }
-
-    @Override
-    public void setReadStatus(int id, boolean status) throws SQLException {
-        PreparedStatement p = db.prepareStatement("UPDATE Tips SET read=? Where id=?");
-        p.setBoolean(1, status);
-        p.setInt(2, id);
-        p.executeUpdate();
-        p.close();
-    }
-
-    public ArrayList<ReadingTip> searchFromTips(String text) throws SQLException {
-        ArrayList<ReadingTip> tipList = new ArrayList<>();
-        PreparedStatement p = db.prepareStatement("SELECT * FROM TIPS WHERE title LIKE ? OR description LIKE ?");
-        p.setString(1, "%" + text + "%");
-        p.setString(2, "%" + text + "%");
-        ResultSet r = p.executeQuery();
-        while (r.next()) {
-            tipList.add(new DefaultReadingTip(
-                    r.getInt("id"),
-                    r.getBoolean("read"),
-                    r.getString("title"),
-                    r.getString("description")
-            ));
-        }
-        return tipList;
-    }
-
-    
 
 
 }

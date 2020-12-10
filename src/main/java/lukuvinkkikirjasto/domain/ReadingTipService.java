@@ -47,6 +47,10 @@ public class ReadingTipService {
         return database.getTips(option);
     }
 
+    public ReadingTip getTip(int id) throws SQLException {
+        return database.getTip(id);
+    }
+
     public ArrayList<ReadingTip> searchReadingTips(String search) throws SQLException {
         return database.searchFromTips(search);
     }
@@ -58,4 +62,8 @@ public class ReadingTipService {
     public void setReadStatus(int id, boolean status) throws SQLException {
         database.setReadStatus(id, status);
     }
+
+	public void editField(int id, String field, String content) throws SQLException {
+        database.editField(id, field, content);
+	}
 }

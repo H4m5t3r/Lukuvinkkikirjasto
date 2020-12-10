@@ -1,6 +1,7 @@
 package lukuvinkkikirjasto.domain;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public abstract class ReadingTip {
     private int id;
@@ -29,6 +30,16 @@ public abstract class ReadingTip {
 
     public String getField(String field) {
         return this.fields.get(field);
+    }
+
+    public String[] getFields() {
+        Set<String> asSet = this.fields.keySet();
+        String[] result = new String[asSet.size()];
+        int i = 0;
+        for (String field: asSet) {
+            result[i++] = field;
+        }
+        return result;
     }
 
     public int getId() {

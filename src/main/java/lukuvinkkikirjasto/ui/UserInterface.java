@@ -15,8 +15,7 @@ public class UserInterface {
         "add video      - add a new video",
         "list           - lists reading tips by choice",
         "search         - search from tips by header or description",
-        "edit header    - edit header of a tip",
-        "edit desc      - edit description of a tip",
+        "edit           - edit a tip",
         "mark as read   - mark a reading tip as read",
         "mark as unread - mark a reading tip as unread",
         "delete         - delete a reading tip",
@@ -40,6 +39,7 @@ public class UserInterface {
         commands.put("delete", new DeleteReadingTip(io, rtService));
         commands.put("mark as read", new MarkAsRead(io, rtService));
         commands.put("mark as unread", new MarkAsUnread(io, rtService));
+        commands.put("edit", new EditField(io, rtService));
         unknown = new Unknown(io, rtService);
     }
 
