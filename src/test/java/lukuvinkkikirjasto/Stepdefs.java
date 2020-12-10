@@ -55,10 +55,50 @@ public class Stepdefs {
     public void headerAndDescriptionAreGiven(String header, String description) throws SQLException {
         rtService.add(header, description);
     }
+    
+    @When("writer {string}, name {string}, isbn {string}, year {string} and description {string} are given")
+    public void writerNameIsbnYearAndDescriptionAreGiven(String writer, String name, String isbn, String year, String description) throws SQLException {
+        rtService.addBook(writer, name, isbn, year, description);
+    }
+    
+    @When("host {string}, name {string}, link {string} and description {string} are given")
+    public void hostNameLinkAndDescriptionAreGiven(String host, String name, String link, String description) throws SQLException {
+        rtService.addPodcast(host, name, link, description);
+    }
+    
+    @When("writer {string}, name {string}, link {string} and description {string} are given")
+    public void writerNameLinkAndDescriptionAreGiven(String writer, String name, String link, String description) throws SQLException {
+        rtService.addBlog(writer, name, link, description);
+    }
+    
+    @When("name {string}, link {string}, published {string} and description {string} are given")
+    public void nameLinkPublishedAndDescriptionAreGiven(String name, String link, String published, String description) throws SQLException {
+        rtService.addVideo(name, link, published, description);
+    }
 
-    @Then("the book {string} is added.")
-    public void theBookIsAdded(String header) throws SQLException {
+    @Then("the tip {string} is added.")
+    public void theTipIsAdded(String header) throws SQLException {
         verify(fakeDatabase).createDefault(eq(header), anyString());
+    }
+    
+    @Then("the book {string} is added.")
+    public void theBookIsAdded(String name) throws SQLException {
+        verify(fakeDatabase).createBook(anyString(), eq(name), anyString(), anyString(), anyString());
+    }
+    
+    @Then("the podcast {string} is added.")
+    public void thePodcastIsAdded(String name) throws SQLException {
+        verify(fakeDatabase).createPodcast(anyString(), eq(name), anyString(), anyString());
+    }
+    
+    @Then("the blog {string} is added.")
+    public void theBlogIsAdded(String name) throws SQLException {
+        verify(fakeDatabase).createBlog(anyString(), eq(name), anyString(), anyString());
+    }
+    
+    @Then("the video {string} is added.")
+    public void theVideoIsAdded(String name) throws SQLException {
+        verify(fakeDatabase).createVideo(eq(name), anyString(), anyString(), anyString());
     }
 
     @Then("the tip with id {int} is removed.")
