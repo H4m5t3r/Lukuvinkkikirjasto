@@ -1,5 +1,6 @@
 package lukuvinkkikirjasto;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -193,6 +194,28 @@ public class Stepdefs {
     @Then("header editor is not accessed")
     public void headerEditorNotAccessed() throws SQLException {
         verify(fakeDatabase, times(0)).editHeader(anyInt(), anyString());
+    }
+
+    @And("id {string} is given to be marked as read")
+    public void idIsGivenToBeMarkAsRead(String id) throws NumberFormatException, SQLException {
+        when(io.input()).thenReturn(id);
+        rtService.setReadStatus(Integer.valueOf(id), true);
+    }
+
+    @And("id {string} is given to be marked as unread")
+    public void idIsGivenToBeMarkedAsUnread(String id) throws NumberFormatException, SQLException {
+        when(io.input()).thenReturn(id);
+        rtService.setReadStatus(Integer.valueOf(id), false);
+    }
+
+    @Then("tip with id {string} is marked as read")
+    public void tipWithIdXIsMarkedAsRead(String id) throws NumberFormatException, SQLException {
+        verify(fakeDatabase, times(1)).setReadStatus(Integer.valueOf(id), true);
+    }
+
+    @Then("tip with id {string} is marked as unread")
+    public void tipWithIdXIsMarkedAsUnread(String id) throws NumberFormatException, SQLException {
+        verify(fakeDatabase, times(1)).setReadStatus(Integer.valueOf(id), false);
     }
 
     @When("search term {string} is entered")
