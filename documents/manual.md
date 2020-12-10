@@ -15,19 +15,18 @@ Ohjelma luo käynnistämisen yhteydessä käynnistyshakemistoon tietokantatiedos
 Sovellus avautuu näkymään, jossa luetellaan toiminnot, joita ohjelmassa on:
 
 Here are the available commands:  
-exit           - close the application
-add general    - add a general reading tip
-add book       - add a new book
-add podcast    - add a new podcast
-add blog       - add a new blog
-add video      - add a new video
-list           - list reading tips by choice
-search         - search from tips by header or description
-edit           - edit a tip
-mark as read   - mark a reading tip as read
-mark as unread - mark a reading tip as unread
-delete         - delete a reading tip
-
+exit           - close the application  
+add general    - add a general reading tip  
+add book       - add a new book  
+add podcast    - add a new podcast  
+add blog       - add a new blog  
+add video      - add a new video  
+list           - list reading tips by choice  
+search         - search from tips by header or description  
+edit           - edit a tip  
+mark as read   - mark a reading tip as read  
+mark as unread - mark a reading tip as unread  
+delete         - delete a reading tip  
 
 ## Uuden lukuvinkin lisääminen
 Toimintolistauksen add ... -komennoilla pääsee lisäämään uusia lukuvinkkejä, halutun tyypin mukaan. "Add general" lisää yleisen lukuvinkin, jolle annetaan vain otsikko ja kuvaus. Komennoilla "add book", "add podcast", "add blog" ja "add video" pääsee lisäämään komennossa olevan tyypin mukaisen vinkin, joille on määritelty tyyppikohtaiset kentät. Lukuvinkille annetaan ohjelman kysymät tiedot, tai kentät voi jättää myös tyhjäksi, jos ei halua täyttää kaikkia kohtia. Lukuvinkki tallentuu automaattisesti, kun sille on annettu kaikki tiedot.  
@@ -50,3 +49,6 @@ Toimintolistauksessa komennolla "delete" pääsee poistamaan halutun lukuvinkin.
 
 ## Ohjelman sulkeminen
 Ohjelma suljetaan toimintolistauksessa komennolla "exit". 
+
+
+
