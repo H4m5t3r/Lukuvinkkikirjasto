@@ -32,6 +32,47 @@ public class SQLDatabaseTest {
         assertEquals(database.getTips("all").get(0).getField("header"), "Test Item");
         assertEquals(database.getTips("all").get(0).getField("description"), "Test description");
     }
+    
+    @Test
+    public void bookIsCreatedAndIsIncludedInTheList() throws SQLException {
+        database.createBook("Test writer", "Test Item", "Test isbn", "Test year", "Test description");
+        assertEquals(database.getTips("all").get(0).getType(), "book");
+        assertEquals(database.getTips("all").get(0).getField("writer"), "Test writer");
+        assertEquals(database.getTips("all").get(0).getField("name"), "Test Item");
+        assertEquals(database.getTips("all").get(0).getField("isbn"), "Test isbn");
+        assertEquals(database.getTips("all").get(0).getField("year"), "Test year");
+        assertEquals(database.getTips("all").get(0).getField("description"), "Test description");
+    }
+    
+    @Test
+    public void podcastIsCreatedAndIsIncludedInTheList() throws SQLException {
+        database.createPodcast("Test host", "Test Item", "Test link", "Test description");
+        assertEquals(database.getTips("all").get(0).getType(), "podcast");
+        assertEquals(database.getTips("all").get(0).getField("host"), "Test host");
+        assertEquals(database.getTips("all").get(0).getField("name"), "Test Item");
+        assertEquals(database.getTips("all").get(0).getField("link"), "Test link");
+        assertEquals(database.getTips("all").get(0).getField("description"), "Test description");
+    }
+    
+    @Test
+    public void blogIsCreatedAndIsIncludedInTheList() throws SQLException {
+        database.createBlog("Test writer", "Test Item", "Test link", "Test description");
+        assertEquals(database.getTips("all").get(0).getType(), "blog");
+        assertEquals(database.getTips("all").get(0).getField("writer"), "Test writer");
+        assertEquals(database.getTips("all").get(0).getField("name"), "Test Item");
+        assertEquals(database.getTips("all").get(0).getField("link"), "Test link");
+        assertEquals(database.getTips("all").get(0).getField("description"), "Test description");
+    }
+    
+    @Test
+    public void videoIsCreatedAndIsIncludedInTheList() throws SQLException {
+        database.createVideo("Test Item", "Test link", "Test published", "Test description");
+        assertEquals(database.getTips("all").get(0).getType(), "video");
+        assertEquals(database.getTips("all").get(0).getField("name"), "Test Item");
+        assertEquals(database.getTips("all").get(0).getField("link"), "Test link");
+        assertEquals(database.getTips("all").get(0).getField("published"), "Test published");
+        assertEquals(database.getTips("all").get(0).getField("description"), "Test description");
+    }
 
     @Test
     public void containsIdFindsExistingId() throws SQLException {

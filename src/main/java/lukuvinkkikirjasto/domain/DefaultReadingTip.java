@@ -14,7 +14,7 @@ public class DefaultReadingTip extends ReadingTip {
 
     @Override
     public String toString() {
-        return "ID: default" + this.getId()
+        return "ID: " + this.getId()
         + "\nHeader: " + this.getField("header")
         + "\nDescription: " + this.getField("description");
     }
