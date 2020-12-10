@@ -7,13 +7,13 @@ import lukuvinkkikirjasto.domain.ReadingTipService;
 
 public class UserInterface {
     private String[] commandDescriptions = {
-        "exit           - closes the application",
-        "new            - add a new reading tip",
+        "exit           - close the application",
+        "add general    - add a new general reading tip",
         "add book       - add a new book",
         "add podcast    - add a new podcast",
         "add blog       - add a new blog",
         "add video      - add a new video",
-        "list           - lists reading tips by choice",
+        "list           - list reading tips by choice",
         "search         - search from tips by header or description",
         "edit           - edit a tip",
         "mark as read   - mark a reading tip as read",
@@ -27,7 +27,7 @@ public class UserInterface {
     public UserInterface(IO io, ReadingTipService rtService) throws SQLException {
         this.io = io;
         commands.put("exit", new Exit(io, rtService));
-        commands.put("new", new CreateReadingTip(io, rtService));
+        commands.put("add general", new CreateReadingTip(io, rtService));
         commands.put("add book", new AddBook(io, rtService));
         commands.put("add podcast", new AddPodcast(io, rtService));
         commands.put("add blog", new AddBlog(io, rtService));
