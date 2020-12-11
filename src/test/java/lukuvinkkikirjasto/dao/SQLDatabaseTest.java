@@ -23,8 +23,6 @@ public class SQLDatabaseTest {
     @Before
     public void setUp() throws SQLException, Exception {
         database = new SQLDatabase("testdatabase.db");
-        // columnNames = new List<String>();
-        // columnValues = new List<String>();
     }
 
     @After
@@ -56,7 +54,6 @@ public class SQLDatabaseTest {
     public void bookIsCreatedAndIsIncludedInTheList() throws SQLException {
         database.createBook("Test writer", "Test Item", "Test isbn", "Test year", "Test description");
         typeIsCorrect("book");
-
         columnNames = Arrays.asList("writer", "name", "isbn", "year", "description");
         columnValues = Arrays.asList("Test writer", "Test Item", "Test isbn", "Test year", "Test description");
         columnValuesAreCorrect();
@@ -187,7 +184,4 @@ public class SQLDatabaseTest {
         assertEquals(searchList.get(0).toString(), new DefaultReadingTip(1, false, "My title", "My description").toString());
         assertEquals(searchList.get(1).toString(), new DefaultReadingTip(2, false, "Another Item To Add", "Descriptive text").toString());
     }
-    
-    
-    
 }
