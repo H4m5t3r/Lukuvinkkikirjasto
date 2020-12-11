@@ -3,7 +3,6 @@ package lukuvinkkikirjasto.dao;
 import java.sql.*;
 import java.util.ArrayList;
 import lukuvinkkikirjasto.domain.BlogReadingTip;
-
 import lukuvinkkikirjasto.domain.BookReadingTip;
 import lukuvinkkikirjasto.domain.DefaultReadingTip;
 import lukuvinkkikirjasto.domain.PodcastReadingTip;
@@ -178,7 +177,6 @@ public class SQLDatabase implements Database {
     }
 
     public ArrayList<ReadingTip> searchFromTips(String text) throws SQLException {
-        ArrayList<ReadingTip> tipList = new ArrayList<>();
         PreparedStatement p = db.prepareStatement("SELECT * FROM TIPS WHERE "
             + "title LIKE ? "
             + "OR author LIKE ? "
@@ -251,10 +249,8 @@ public class SQLDatabase implements Database {
                         r.getString("description")
                 ));
             }
-            
         }
         return tipList;
     }
-
-
+    
 }

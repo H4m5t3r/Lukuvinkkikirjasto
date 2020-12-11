@@ -1,7 +1,6 @@
 package lukuvinkkikirjasto.ui;
 
 import java.sql.SQLException;
-
 import lukuvinkkikirjasto.domain.ReadingTip;
 import lukuvinkkikirjasto.domain.ReadingTipService;
 
