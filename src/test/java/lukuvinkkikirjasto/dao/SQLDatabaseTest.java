@@ -3,6 +3,9 @@ package lukuvinkkikirjasto.dao;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import lukuvinkkikirjasto.domain.DefaultReadingTip;
 import lukuvinkkikirjasto.domain.ReadingTip;
 import org.junit.*;
@@ -14,11 +17,15 @@ import static org.junit.Assert.assertTrue;
 public class SQLDatabaseTest {
 
     SQLDatabase database;
+    List<String> columnNames;
+    List<String> columnValues;
 
     @Before
     public void setUp() throws SQLException, Exception {
         database = new SQLDatabase("testdatabase.db");
-    } 
+        // columnNames = new List<String>();
+        // columnValues = new List<String>();
+    }
 
     @After
     public void tearDown() {
@@ -26,52 +33,60 @@ public class SQLDatabaseTest {
         dbFile.delete();
     }
 
+    private void typeIsCorrect(String type) throws SQLException {
+        assertEquals(database.getTips("all").get(0).getType(), type);
+    }
+
+    private void columnValuesAreCorrect() throws SQLException {
+        for (int i = 0; i < columnNames.size(); i++) {
+            assertEquals(database.getTips("all").get(0).getField(columnNames.get(i)), columnValues.get(i));
+        }
+    }
+
     @Test
     public void readingTipIsCreatedAndIsIncludedInTheList() throws SQLException {
         database.createDefault("Test Item", "Test description");
-        assertEquals(database.getTips("all").get(0).getField("header"), "Test Item");
-        assertEquals(database.getTips("all").get(0).getField("description"), "Test description");
+        typeIsCorrect("default");
+        columnNames = Arrays.asList("header", "description");
+        columnValues = Arrays.asList("Test Item", "Test description");
+        columnValuesAreCorrect();
     }
     
     @Test
     public void bookIsCreatedAndIsIncludedInTheList() throws SQLException {
         database.createBook("Test writer", "Test Item", "Test isbn", "Test year", "Test description");
-        assertEquals(database.getTips("all").get(0).getType(), "book");
-        assertEquals(database.getTips("all").get(0).getField("writer"), "Test writer");
-        assertEquals(database.getTips("all").get(0).getField("name"), "Test Item");
-        assertEquals(database.getTips("all").get(0).getField("isbn"), "Test isbn");
-        assertEquals(database.getTips("all").get(0).getField("year"), "Test year");
-        assertEquals(database.getTips("all").get(0).getField("description"), "Test description");
+        typeIsCorrect("book");
+
+        columnNames = Arrays.asList("writer", "name", "isbn", "year", "description");
+        columnValues = Arrays.asList("Test writer", "Test Item", "Test isbn", "Test year", "Test description");
+        columnValuesAreCorrect();
     }
     
     @Test
     public void podcastIsCreatedAndIsIncludedInTheList() throws SQLException {
         database.createPodcast("Test host", "Test Item", "Test link", "Test description");
-        assertEquals(database.getTips("all").get(0).getType(), "podcast");
-        assertEquals(database.getTips("all").get(0).getField("host"), "Test host");
-        assertEquals(database.getTips("all").get(0).getField("name"), "Test Item");
-        assertEquals(database.getTips("all").get(0).getField("link"), "Test link");
-        assertEquals(database.getTips("all").get(0).getField("description"), "Test description");
+        typeIsCorrect("podcast");
+        columnNames = Arrays.asList("host", "name", "link", "description");
+        columnValues = Arrays.asList("Test host", "Test Item", "Test link", "Test description");
+        columnValuesAreCorrect();
     }
     
     @Test
     public void blogIsCreatedAndIsIncludedInTheList() throws SQLException {
         database.createBlog("Test writer", "Test Item", "Test link", "Test description");
-        assertEquals(database.getTips("all").get(0).getType(), "blog");
-        assertEquals(database.getTips("all").get(0).getField("writer"), "Test writer");
-        assertEquals(database.getTips("all").get(0).getField("name"), "Test Item");
-        assertEquals(database.getTips("all").get(0).getField("link"), "Test link");
-        assertEquals(database.getTips("all").get(0).getField("description"), "Test description");
+        typeIsCorrect("blog");
+        columnNames = Arrays.asList("writer", "name", "link", "description");
+        columnValues = Arrays.asList("Test writer", "Test Item", "Test link", "Test description");
+        columnValuesAreCorrect();
     }
     
     @Test
     public void videoIsCreatedAndIsIncludedInTheList() throws SQLException {
         database.createVideo("Test Item", "Test link", "Test published", "Test description");
-        assertEquals(database.getTips("all").get(0).getType(), "video");
-        assertEquals(database.getTips("all").get(0).getField("name"), "Test Item");
-        assertEquals(database.getTips("all").get(0).getField("link"), "Test link");
-        assertEquals(database.getTips("all").get(0).getField("published"), "Test published");
-        assertEquals(database.getTips("all").get(0).getField("description"), "Test description");
+        typeIsCorrect("video");
+        columnNames = Arrays.asList("name", "link", "published", "description");
+        columnValues = Arrays.asList("Test Item", "Test link", "Test published", "Test description");
+        columnValuesAreCorrect();
     }
 
     @Test
