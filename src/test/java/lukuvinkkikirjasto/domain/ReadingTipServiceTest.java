@@ -68,6 +68,11 @@ public class ReadingTipServiceTest {
     public void searchReadingTipsSearchesTips() throws SQLException {
         rtService.searchReadingTips("search");
         verify(fakeDatabase).searchFromTips("search");
-    } 
+    }
     
+    @Test
+    public void editFieldEditsAFieldInTheDatabase() throws SQLException {
+        rtService.editField(1, "host", "new host");
+        verify(fakeDatabase).editField(1, "host", "new host");
+    }
 }

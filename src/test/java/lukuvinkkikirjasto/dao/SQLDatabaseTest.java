@@ -184,4 +184,46 @@ public class SQLDatabaseTest {
         assertEquals(searchList.get(0).toString(), new DefaultReadingTip(1, false, "My title", "My description").toString());
         assertEquals(searchList.get(1).toString(), new DefaultReadingTip(2, false, "Another Item To Add", "Descriptive text").toString());
     }
+
+    @Test
+    public void editFieldEditsWriterColumnValue() throws SQLException {
+        database.createBook("test writer", "test name", "testIsbn", "2012", "test description");
+        database.editField(1, "writer", "new name");
+        assertEquals(database.getTip(1).getField("writer"), "new name");
+    }
+
+    @Test
+    public void editFieldEditsHostColumnValue() throws SQLException {
+        database.createPodcast("test host", "test name", "test link", "test description");
+        database.editField(1, "host", "new host");
+        assertEquals(database.getTip(1).getField("host"), "new host");
+    }
+
+    @Test
+    public void editFieldEditsNameColumnValue() throws SQLException {
+        database.createBlog("test writer", "test name", "test link", "test description");
+        database.editField(1, "name", "new name");
+        assertEquals(database.getTip(1).getField("name"), "new name");
+    }
+
+    @Test
+    public void editFieldEditsYearColumnValue() throws SQLException {
+        database.createBook("test writer", "test name", "testIsbn", "2012", "test description");
+        database.editField(1, "year", "2011");
+        assertEquals(database.getTip(1).getField("year"), "2011");
+    }
+
+    @Test
+    public void editFieldEditsHeaderColumnValue() throws SQLException {
+        database.createVideo("test video", "test link", "2001", "test description");
+        database.editField(1, "header", "new header");
+        assertEquals(database.getTip(1).getField("name"), "new header");
+    }
+
+    @Test
+    public void editUsesFieldIfNoMatches() throws SQLException {
+        database.createDefault("test title", "test description");
+        database.editField(1, "description", "new description");
+        assertEquals(database.getTip(1).getField("description"), "new description");
+    }
 }
