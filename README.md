@@ -13,3 +13,6 @@
 
 ## Käyttäjäohjeet
 [Asennus- ja käyttöohje](documents/manual.md)
+
+## Loppuraportti
+[Linkki raporttiin](https://github.com/H4m5t3r/Lukuvinkkikirjasto/blob/main/Loppuraportti.md)

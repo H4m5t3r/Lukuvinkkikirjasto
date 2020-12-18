@@ -1,11 +1,17 @@
 # Miniprojektin loppuraportti
 
 Ryhmän 18 jäsenet:
-Leo Becker 
+
+Leo Becker
+
 Kalle Korhonen
+
 Jenni Liikanen
+
 Anton Taleiko
+
 Juha-Pekka Tulijoki
+
 Sonja Vuorinen
 
 
