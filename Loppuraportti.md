@@ -20,7 +20,9 @@ Sonja Vuorinen
 Projektin alussa osa ajasta meni niin sanottuun tekniseen säätöön. Alussa mietittiin, olisiko meidän pitänyt käyttää Discordia sekä chattinä että videokeskusteluvälineenä. Päätimme kuitenkin käyttää Zoomia pariohjelmointiin. Muita haasteita olivat, että meidän piti etsiä tietoa siitä miten ohjelmaa kannattaisi toteuttaa ja että kaikkien piti oppia, miten ohjelmaa käytetään ja laajennetaan.
 
 Toisen sprintin aikana kului vähemmän aikaa tekniseen säätöön, kun tiesimme jo valmiiksi kuinka työskennellä. Ongelmaksi muodostui kuitenkin, että emme aina jatkaneet työskentelyä siitä, mihin toiset ryhmäläiset olivat lopettaneet, vaan aloitimme sen sijaan uusia user storyja eri pariohjelmointisessioiden aikana. Tämä johti siihen, että osa user storyista oli periaatteessa valmiita, mutta niistä puuttui Cucumber-testit, jolloin jouduimme siirtämään ne seuraavaan sprinttiin.
+
 Kolmannen sprintin aikana olimme oppineet, mitä kannattaa ja mitä ei kannata tehdä. Tämän sprintin haaste oli sen sijaan työskennellä tehokkaasti, jotta saisimme kaikki user storyt valmiiksi, koska halusimme lopettaa projektin loogiseen kokonaisuuteen.
+
 Eräs ongelma, johon projektin aikana törmäsimme myös, oli löytää yhteisiä aikoja pariohjelmoinnille. Vaikka ryhmät oltiin muodostettu opiskelijoiden antamien aikataulujen perusteella, oli ryhmällämme vain muutamia aikoja, jotka sopivat kaikille.
 
 ## Onnistumiset
