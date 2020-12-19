@@ -46,7 +46,9 @@ Ryhmällä oli ryhmänjakosovelluksen perusteella vain 4 tuntia yhteistä työai
 ### Mitä asioita opimme
 
 Opimme projektin aikana etenkin tapoja ryhmänä työn edistämiselle yhdessä ja annettua aikataulua noudattaen. Annettu kuuden tunnin aikaraja per ryhmäläinen kussakin sprintissä piti työnteon määrän tasaisena läpi projektin, ja työ jakautui tasaisesti ryhmän jäsenten kesken. Tasaiseen edistymiseen ja työnjakoon vaikutti positiivisesti työskentelytavaksi valittu pariohjelmointi: kaikilla oli yhtä monta sessiota kussakin sprintissä, ja kahden tunnin pariohjelmointisessioilla oli selkeä aloitusaika, kumpikin koodasi suurin piirtein puolet ajasta, ja sessiot eivät venyneet tarpeettomasti lopusta. 
+
 Opimme projektin myötä myös hyvistä kokouskäytännöistä, mm. mitä teknisiä valmisteluja kannattaa tehdä jo ennen kokouksia ja pariohjelmointisessioita, jotta niihin ei mene turhaan aikaa itse tapaamisen alussa. 
+
 Ohjelmoinnin osalta projekti syvensi ryhmäläisen java-kielen osaamista ja ymmärrystä ohjelman rakentamisesta. Toteutimme ohjelmassamme esimerkiksi käyttöliittymän valinnat komento-olioina. Lisäksi opimme lisää uudenlaisten testien kirjoittamisesta user story -tasolle. Osalla ryhmän jäsenistä oli enemmän ohjelmointikokemusta kuin toisilla, ja projektin aikana opimme myös toisiltamme, mitä etenkin pariohjelmointi edesauttoi.
 
 ### Mitä asioita olisimme halunneet oppia
